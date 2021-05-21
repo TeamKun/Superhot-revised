@@ -2,7 +2,6 @@ package net.kunmc.lab.superhot.state;
 
 import net.kunmc.lab.superhot.Superhot;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -29,10 +28,6 @@ public class Moving extends AbstractState {
 
         if (entity.hasMetadata(Superhot.METADATAKEY)) {
             entity.setGravity(false);
-        }
-
-        if (entity instanceof Item) {
-            Item item = ((Item) entity);
         }
     }
 }

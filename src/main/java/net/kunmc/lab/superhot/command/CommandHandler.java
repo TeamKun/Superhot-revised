@@ -1,7 +1,6 @@
 package net.kunmc.lab.superhot.command;
 
 import net.kunmc.lab.superhot.GameManager;
-import net.kunmc.lab.superhot.SuperhotState;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -26,7 +25,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
         switch (args[0]) {
             case "start":
-                if (SuperhotState.isEnabled) {
+                if (manager.isSuperhotEnabled()) {
                     sender.sendMessage(ChatColor.RED + "Superhotは既に有効です.");
                     break;
                 }
@@ -45,7 +44,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 manager.start(target);
                 break;
             case "stop":
-                if (!SuperhotState.isEnabled) {
+                if (!manager.isSuperhotEnabled()) {
                     sender.sendMessage(ChatColor.RED + "Superhotは既に無効です.");
                     break;
                 }

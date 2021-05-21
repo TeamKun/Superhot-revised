@@ -1,7 +1,7 @@
 package net.kunmc.lab.superhot.listener;
 
+import net.kunmc.lab.superhot.GameManager;
 import net.kunmc.lab.superhot.Superhot;
-import net.kunmc.lab.superhot.SuperhotState;
 import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.state.Attacking;
 import net.kunmc.lab.superhot.state.Moving;
@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class StateChange implements Listener {
-    Map<UUID, BukkitTask> playerLocationFixTasks = new HashMap<>();
+public class StateChangeListener implements Listener {
+    private final Map<UUID, BukkitTask> playerLocationFixTasks = new HashMap<>();
+    private final GameManager manager = GameManager.getInstance();
 
     @EventHandler
     public void onStateChange(StateChangeEvent e) {
@@ -28,7 +29,7 @@ public class StateChange implements Listener {
         if (e.getStateClass().equals(Stopping.class)) {
             Bukkit.getOnlinePlayers().stream().forEach(p -> {
                 UUID uuid = p.getUniqueId();
-                if (uuid.equals(SuperhotState.mainPlayerUUID)) return;
+                if (uuid.equals(manager.getMainPlayerUUID())) return;
                 BukkitTask task = new PlayerLocationFixer(uuid, p.getLocation()).runTaskTimer(Superhot.getInstance(), 0, 0);
                 playerLocationFixTasks.put(uuid, task);
             });

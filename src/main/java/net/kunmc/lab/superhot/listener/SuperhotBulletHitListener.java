@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 
-public class SuperhotBulletHit implements Listener {
+public class SuperhotBulletHitListener implements Listener {
     @EventHandler
     public void onBulletHit(ProjectileHitEvent e) {
         if (!e.getEntity().hasMetadata(Superhot.METADATAKEY)) return;

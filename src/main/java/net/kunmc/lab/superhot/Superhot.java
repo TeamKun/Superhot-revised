@@ -3,17 +3,13 @@ package net.kunmc.lab.superhot;
 import net.kunmc.lab.superhot.command.CommandHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
 public final class Superhot extends JavaPlugin {
     private static Superhot INSTANCE;
-    public static String METADATAKEY = "SuperhotMeta";
-    public static MetadataValue METADATAVALUE;
-
+    public static final String METADATAKEY = "SuperhotMeta";
 
     public static Superhot getInstance() {
         return INSTANCE;
@@ -22,7 +18,6 @@ public final class Superhot extends JavaPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
-        METADATAVALUE = new FixedMetadataValue(this, "SuperhotBullet");
         getServer().getPluginCommand("superhot").setExecutor(new CommandHandler());
         getServer().getPluginCommand("superhot").setTabCompleter(new CommandHandler());
     }

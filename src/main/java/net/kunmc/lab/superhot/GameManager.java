@@ -17,12 +17,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
+
+import java.util.UUID;
 
 public class GameManager {
-    private static final GameManager singleton = new GameManager();
-    private BukkitTask moveObserverTask;
+    private UUID mainPlayerUUID;
+    private boolean isSuperhotEnabled;
+    private boolean isMainPlayerMoving;
     private AbstractState state = new Stopping();
+    private static final GameManager singleton = new GameManager();
 
     private GameManager() {
     }
@@ -32,28 +35,29 @@ public class GameManager {
     }
 
     public void start(Player target) {
-        SuperhotState.mainPlayerUUID = target.getUniqueId();
-        SuperhotState.isEnabled = true;
-        SuperhotState.isMainPlayerMoving = true;
+        mainPlayerUUID = target.getUniqueId();
+        isSuperhotEnabled = true;
+        isMainPlayerMoving = true;
 
         JavaPlugin plugin = Superhot.getInstance();
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
-        pluginManager.registerEvents(new EntitySpawn(), plugin);
-        pluginManager.registerEvents(new MainPlayerAttack(), plugin);
-        pluginManager.registerEvents(new PlayerJoin(), plugin);
-        pluginManager.registerEvents(new PlayerLogout(), plugin);
-        pluginManager.registerEvents(new StateChange(), plugin);
-        pluginManager.registerEvents(new ProjectileHit(), plugin);
-        pluginManager.registerEvents(new SuperhotBulletHit(), plugin);
-        pluginManager.registerEvents(new UseSuperhotGun(), plugin);
+        pluginManager.registerEvents(new EntitySpawnListener(), plugin);
+        pluginManager.registerEvents(new MainPlayerAttackListener(), plugin);
+        pluginManager.registerEvents(new PlayerJoinListener(), plugin);
+        pluginManager.registerEvents(new PlayerQuitListener(), plugin);
+        pluginManager.registerEvents(new StateChangeListener(), plugin);
+        pluginManager.registerEvents(new ProjectileHitListener(), plugin);
+        pluginManager.registerEvents(new SuperhotBulletHitListener(), plugin);
+        pluginManager.registerEvents(new UseSuperhotGunListener(), plugin);
 
-        moveObserverTask = new MainPlayerMoveObserver().runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
+        new MainPlayerMoveObserver()
+                .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
     }
 
     public void stop() {
-        SuperhotState.mainPlayerUUID = null;
-        SuperhotState.isEnabled = false;
-        SuperhotState.isMainPlayerMoving = false;
+        mainPlayerUUID = null;
+        isSuperhotEnabled = false;
+        isMainPlayerMoving = false;
 
         JavaPlugin plugin = Superhot.getInstance();
         EntitySpawnEvent.getHandlerList().unregister(plugin);
@@ -94,5 +98,25 @@ public class GameManager {
 
     public void updateEntity(Entity entity) {
         state.updateEntity(entity);
+    }
+
+    public boolean isMainPlayerMoving() {
+        return isMainPlayerMoving;
+    }
+
+    public void setMainPlayerMoving(boolean isMainPlayerMoving) {
+        this.isMainPlayerMoving = isMainPlayerMoving;
+    }
+
+    public boolean isSuperhotEnabled() {
+        return isSuperhotEnabled;
+    }
+
+    public UUID getMainPlayerUUID() {
+        return mainPlayerUUID;
+    }
+
+    public void setMainPlayerUUID(UUID uuid) {
+        mainPlayerUUID = uuid;
     }
 }

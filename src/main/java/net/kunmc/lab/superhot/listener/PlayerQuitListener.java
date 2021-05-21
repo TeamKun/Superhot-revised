@@ -5,9 +5,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerLogout implements Listener {
+public class PlayerQuitListener implements Listener {
+    private final GameManager manager = GameManager.getInstance();
+
     @EventHandler
-    public void onLogout(PlayerQuitEvent e) {
-        GameManager.getInstance().restoreEntityState(e.getPlayer());
+    public void onQuit(PlayerQuitEvent e) {
+        manager.restoreEntityState(e.getPlayer());
     }
 }

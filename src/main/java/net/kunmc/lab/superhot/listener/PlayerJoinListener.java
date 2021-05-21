@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerJoin implements Listener {
-    GameManager manager = GameManager.getInstance();
+public class PlayerJoinListener implements Listener {
+    private final GameManager manager = GameManager.getInstance();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {

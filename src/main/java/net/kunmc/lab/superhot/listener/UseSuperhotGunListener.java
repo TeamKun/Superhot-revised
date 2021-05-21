@@ -11,7 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public class UseSuperhotGun implements Listener {
+public class UseSuperhotGunListener implements Listener {
     @EventHandler
     public void onUseSuperhotGun(PlayerInteractEvent e) {
         Action action = e.getAction();

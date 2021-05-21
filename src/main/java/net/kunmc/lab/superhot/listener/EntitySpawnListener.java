@@ -7,8 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class EntitySpawn implements Listener {
-    GameManager manager = GameManager.getInstance();
+public class EntitySpawnListener implements Listener {
+    private final GameManager manager = GameManager.getInstance();
 
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent e) {

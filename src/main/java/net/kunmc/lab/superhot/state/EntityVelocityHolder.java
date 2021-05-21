@@ -6,8 +6,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 class EntityVelocityHolder {
-    private static EntityVelocityHolder singleton = new EntityVelocityHolder();
-    private ConcurrentHashMap<UUID, Vector> entityVelocities = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Vector> entityVelocities = new ConcurrentHashMap<>();
+    private static final EntityVelocityHolder singleton = new EntityVelocityHolder();
 
     private EntityVelocityHolder() {
     }
