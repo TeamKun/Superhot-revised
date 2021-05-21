@@ -64,7 +64,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             return Stream.of("start", "stop").filter(x -> x.startsWith(args[0])).collect(Collectors.toList());
 
         if (args.length == 2 && args[0].equalsIgnoreCase("start"))
-            return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+            return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(x -> x.startsWith(args[1])).collect(Collectors.toList());
 
         return Collections.emptyList();
     }
