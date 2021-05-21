@@ -2,3 +2,8 @@ name: SUPERHOT
 version: ${project.version}
 main: net.kunmc.lab.superhot.Superhot
 api-version: 1.16
+commands:
+  superhot:
+    usage: |-
+      /superhot start <player>
+      /superhot stop
