@@ -1,7 +1,8 @@
 package net.kunmc.lab.superhot;
 
+import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.state.AbstractState;
-import net.kunmc.lab.superhot.state.Moving;
+import net.kunmc.lab.superhot.state.Stopping;
 import net.kunmc.lab.superhot.task.MainPlayerMoveObserver;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -12,7 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 public class GameManager {
     private static final GameManager singleton = new GameManager();
     private BukkitTask moveObserverTask;
-    private AbstractState state = new Moving();
+    private AbstractState state = new Stopping();
 
     private GameManager() {
     }
@@ -31,12 +32,16 @@ public class GameManager {
     public void stop() {
         SuperhotState.mainPlayerUUID = null;
         SuperhotState.isEnabled = false;
-        if (moveObserverTask != null) moveObserverTask.cancel();
+        SuperhotState.isMainPlayerMoving = false;
+
+        Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
     }
 
     public void changeState(AbstractState state) {
         this.state = state;
+        Bukkit.getScheduler().runTask(Superhot.getInstance(), () ->
+                Bukkit.getPluginManager().callEvent(new StateChangeEvent(state.getClass())));
     }
 
     public void restoreEntityState(Entity entity) {
