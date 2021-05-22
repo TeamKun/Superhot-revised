@@ -6,6 +6,7 @@ import net.kunmc.lab.superhot.state.AbstractState;
 import net.kunmc.lab.superhot.state.Stopping;
 import net.kunmc.lab.superhot.task.MainPlayerMoveObserver;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -89,6 +90,7 @@ public class GameManager {
 
         if (entity instanceof Player) {
             Player p = ((Player) entity);
+            p.setAllowFlight(p.getGameMode().equals(GameMode.SPECTATOR) || p.getGameMode().equals(GameMode.CREATIVE));
             p.setWalkSpeed(0.2F);
             p.setFlySpeed(0.1F);
         }

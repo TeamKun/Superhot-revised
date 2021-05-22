@@ -16,6 +16,7 @@ public class Attacking extends AbstractState {
 
         if (entity instanceof Player) {
             Player p = ((Player) entity);
+            p.setAllowFlight(false);
             p.setWalkSpeed(0.2F);
             p.setFlySpeed(0.1F);
         }

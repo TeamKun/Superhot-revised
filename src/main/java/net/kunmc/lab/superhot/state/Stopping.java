@@ -21,6 +21,7 @@ public class Stopping extends AbstractState {
 
         if (entity instanceof Player) {
             Player p = ((Player) entity);
+            p.setAllowFlight(true);
             p.setWalkSpeed(0.0F);
             p.setFlySpeed(0.0F);
         }
