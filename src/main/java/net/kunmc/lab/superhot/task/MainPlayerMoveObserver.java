@@ -30,7 +30,6 @@ public class MainPlayerMoveObserver extends BukkitRunnable {
         } else {
             threshold = 0.05;
         }
-        mainPlayer.sendMessage(String.valueOf(distance));
         boolean isMainPlayerMoving = distance >= threshold;
         if (manager.isMainPlayerMoving() ^ isMainPlayerMoving) {
             manager.changeState(isMainPlayerMoving ? new Moving() : new Stopping());

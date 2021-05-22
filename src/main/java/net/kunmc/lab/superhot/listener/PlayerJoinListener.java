@@ -10,6 +10,7 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        if (e.getPlayer().getUniqueId().equals(manager.getMainPlayerUUID())) return;
         manager.updateEntity(e.getPlayer());
     }
 }

@@ -10,6 +10,7 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
+        if (e.getPlayer().getUniqueId().equals(manager.getMainPlayerUUID())) return;
         manager.restoreEntityState(e.getPlayer());
     }
 }
