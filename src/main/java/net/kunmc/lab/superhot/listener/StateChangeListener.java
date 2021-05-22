@@ -5,11 +5,14 @@ import net.kunmc.lab.superhot.Superhot;
 import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.state.Stopping;
 import net.kunmc.lab.superhot.task.PlayerLocationFixer;
+import net.kunmc.lab.superhot.util.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -28,6 +31,8 @@ public class StateChangeListener implements Listener {
             Bukkit.getOnlinePlayers().forEach(p -> {
                 UUID uuid = p.getUniqueId();
                 if (uuid.equals(manager.getMainPlayerUUID())) return;
+                if (Utils.isCreativeOrAdventure(p)) return;
+
                 BukkitTask task = new PlayerLocationFixer(uuid, p.getLocation()).runTaskTimer(Superhot.getInstance(), 0, 0);
                 playerLocationFixTasks.put(uuid, task);
             });
@@ -39,6 +44,7 @@ public class StateChangeListener implements Listener {
         Player p = e.getPlayer();
         UUID uuid = p.getUniqueId();
         if (uuid.equals(manager.getMainPlayerUUID())) return;
+        if (Utils.isCreativeOrAdventure(p)) return;
 
         BukkitTask oldTask = playerLocationFixTasks.get(uuid);
         if (oldTask != null) oldTask.cancel();
@@ -48,6 +54,20 @@ public class StateChangeListener implements Listener {
             if (respawnLoc == null) respawnLoc = p.getCompassTarget();
 
             BukkitTask task = new PlayerLocationFixer(uuid, respawnLoc).runTaskTimer(Superhot.getInstance(), 0, 0);
+            playerLocationFixTasks.put(uuid, task);
+        }
+    }
+
+    @EventHandler
+    public void onGameModeChange(PlayerGameModeChangeEvent e) {
+        GameMode mode = e.getNewGameMode();
+        if (mode.equals(GameMode.CREATIVE) || mode.equals(GameMode.SPECTATOR)) {
+            BukkitTask task = playerLocationFixTasks.get(e.getPlayer().getUniqueId());
+            if (task != null) task.cancel();
+            manager.restoreEntityState(e.getPlayer());
+        } else {
+            UUID uuid = e.getPlayer().getUniqueId();
+            BukkitTask task = new PlayerLocationFixer(uuid, e.getPlayer().getLocation()).runTaskTimer(Superhot.getInstance(), 0, 0);
             playerLocationFixTasks.put(uuid, task);
         }
     }
