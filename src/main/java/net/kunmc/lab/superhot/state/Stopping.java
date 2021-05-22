@@ -5,7 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class Stopping extends AbstractState {
+public class Stopping implements IState {
     private final EntityVelocityHolder holder = EntityVelocityHolder.getInstance();
 
     @Override

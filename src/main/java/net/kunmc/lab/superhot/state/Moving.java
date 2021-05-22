@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.util.Vector;
 
-public class Moving extends AbstractState {
+public class Moving implements IState {
     private final EntityVelocityHolder holder = EntityVelocityHolder.getInstance();
 
     @Override

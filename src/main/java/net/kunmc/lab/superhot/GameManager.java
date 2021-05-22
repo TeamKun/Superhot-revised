@@ -2,7 +2,7 @@ package net.kunmc.lab.superhot;
 
 import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.listener.*;
-import net.kunmc.lab.superhot.state.AbstractState;
+import net.kunmc.lab.superhot.state.IState;
 import net.kunmc.lab.superhot.state.Stopping;
 import net.kunmc.lab.superhot.task.MainPlayerMoveObserver;
 import org.bukkit.Bukkit;
@@ -20,13 +20,14 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.UUID;
 
 public class GameManager {
     private UUID mainPlayerUUID;
     private boolean isSuperhotEnabled;
     private boolean isMainPlayerMoving;
-    private AbstractState state = new Stopping();
+    private IState state = new Stopping();
     private static final GameManager singleton = new GameManager();
 
     private GameManager() {
@@ -75,7 +76,7 @@ public class GameManager {
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
     }
 
-    public void changeState(AbstractState state) {
+    public void changeState(IState state) {
         this.state = state;
         Bukkit.getScheduler().runTask(Superhot.getInstance(), () ->
                 Bukkit.getPluginManager().callEvent(new StateChangeEvent(state.getClass())));
@@ -97,7 +98,13 @@ public class GameManager {
     }
 
     public void updateAllEntities() {
-        state.updateAllEntities();
+        Player p = Bukkit.getPlayer(mainPlayerUUID);
+        if (p == null) return;
+        List<Entity> entityList = Bukkit.selectEntities(p, "@e");
+        entityList.parallelStream().forEach(x -> {
+            if (x.equals(p)) return;
+            updateEntity(x);
+        });
     }
 
     public void updateEntity(Entity entity) {

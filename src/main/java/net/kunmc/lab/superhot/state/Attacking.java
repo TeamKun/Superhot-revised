@@ -5,7 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class Attacking extends AbstractState {
+public class Attacking implements IState {
     @Override
     public void updateEntity(Entity entity) {
         entity.setGravity(true);
