@@ -11,7 +11,7 @@ public class Stopping extends AbstractState {
     @Override
     public void updateEntity(Entity entity) {
         entity.setGravity(false);
-        holder.storeVelocity(entity.getUniqueId(), entity.getVelocity());
+        holder.storeVelocity(entity, entity.getVelocity());
         entity.setVelocity(new Vector());
 
         if (entity instanceof LivingEntity) {

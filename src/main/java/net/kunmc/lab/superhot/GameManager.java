@@ -15,6 +15,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,7 +49,7 @@ public class GameManager {
         pluginManager.registerEvents(new StateChangeListener(), plugin);
         pluginManager.registerEvents(new ProjectileHitListener(), plugin);
         pluginManager.registerEvents(new SuperhotBulletHitListener(), plugin);
-        pluginManager.registerEvents(new UseSuperhotGunListener(), plugin);
+        pluginManager.registerEvents(new SuperhotGunUsedListener(), plugin);
 
         new MainPlayerMoveObserver()
                 .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
@@ -67,6 +68,7 @@ public class GameManager {
         StateChangeEvent.getHandlerList().unregister(plugin);
         ProjectileHitEvent.getHandlerList().unregister(plugin);
         PlayerInteractEvent.getHandlerList().unregister(plugin);
+        PlayerRespawnEvent.getHandlerList().unregister(plugin);
 
         Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);

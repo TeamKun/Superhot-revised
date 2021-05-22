@@ -4,6 +4,7 @@ import net.kunmc.lab.superhot.Superhot;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.util.Vector;
 
 public class Moving extends AbstractState {
@@ -12,7 +13,7 @@ public class Moving extends AbstractState {
     @Override
     public void updateEntity(Entity entity) {
         entity.setGravity(true);
-        Vector velocity = holder.getVelocity(entity.getUniqueId());
+        Vector velocity = holder.getVelocity(entity);
         if (velocity != null) entity.setVelocity(velocity);
 
         if (entity instanceof LivingEntity) {
@@ -28,6 +29,11 @@ public class Moving extends AbstractState {
 
         if (entity.hasMetadata(Superhot.METADATAKEY)) {
             entity.setGravity(false);
+        }
+
+        //bulletがたまに途中で止まるので暫定的処置
+        if (entity instanceof Snowball && entity.getVelocity().distance(new Vector()) == 0.0) {
+            entity.remove();
         }
     }
 }
