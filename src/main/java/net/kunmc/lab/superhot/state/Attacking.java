@@ -2,6 +2,7 @@ package net.kunmc.lab.superhot.state;
 
 import net.kunmc.lab.superhot.Superhot;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -19,6 +20,13 @@ public class Attacking implements IState {
             p.setAllowFlight(false);
             p.setWalkSpeed(0.2F);
             p.setFlySpeed(0.1F);
+        }
+
+        if (entity instanceof Item) {
+            Item item = ((Item) entity);
+            item.setCanMobPickup(true);
+            item.setCanPlayerPickup(true);
+            item.setPickupDelay(8);
         }
 
         if (entity.hasMetadata(Superhot.METADATAKEY)) {

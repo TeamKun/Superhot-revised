@@ -1,6 +1,7 @@
 package net.kunmc.lab.superhot.state;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -24,6 +25,12 @@ public class Stopping implements IState {
             p.setAllowFlight(true);
             p.setWalkSpeed(0.0F);
             p.setFlySpeed(0.0F);
+        }
+
+        if (entity instanceof Item) {
+            Item item = ((Item) entity);
+            item.setCanMobPickup(false);
+            item.setCanPlayerPickup(false);
         }
     }
 }

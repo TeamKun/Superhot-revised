@@ -1,10 +1,7 @@
 package net.kunmc.lab.superhot.state;
 
 import net.kunmc.lab.superhot.Superhot;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 public class Moving implements IState {
@@ -26,6 +23,13 @@ public class Moving implements IState {
             p.setAllowFlight(false);
             p.setWalkSpeed(0.2F);
             p.setFlySpeed(0.1F);
+        }
+
+        if (entity instanceof Item) {
+            Item item = ((Item) entity);
+            item.setCanMobPickup(true);
+            item.setCanPlayerPickup(true);
+            item.setPickupDelay(8);
         }
 
         if (entity.hasMetadata(Superhot.METADATAKEY)) {
