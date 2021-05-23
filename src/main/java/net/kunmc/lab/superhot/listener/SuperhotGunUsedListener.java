@@ -37,7 +37,7 @@ public class SuperhotGunUsedListener implements Listener {
         Snowball bullet = p.launchProjectile(Snowball.class);
         bullet.setMetadata(Superhot.METADATAKEY, new FixedMetadataValue(Superhot.getInstance(), null));
         bullet.setGravity(false);
-
+        
         //50m飛んだら弾を削除する
         new BukkitRunnable() {
             @Override

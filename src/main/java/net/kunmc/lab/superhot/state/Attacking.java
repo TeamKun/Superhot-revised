@@ -17,7 +17,7 @@ public class Attacking implements IState {
         if (velocity != null) {
             entity.setVelocity(velocity);
         }
-        
+
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(true);

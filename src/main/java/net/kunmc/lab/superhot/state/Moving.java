@@ -1,7 +1,10 @@
 package net.kunmc.lab.superhot.state;
 
 import net.kunmc.lab.superhot.Superhot;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class Moving implements IState {
@@ -36,11 +39,6 @@ public class Moving implements IState {
 
         if (entity.hasMetadata(Superhot.METADATAKEY)) {
             entity.setGravity(false);
-        }
-
-        //bulletがたまに途中で止まるので暫定的処置
-        if (entity instanceof Snowball && entity.getVelocity().distance(new Vector()) == 0.0) {
-            entity.remove();
         }
     }
 }
