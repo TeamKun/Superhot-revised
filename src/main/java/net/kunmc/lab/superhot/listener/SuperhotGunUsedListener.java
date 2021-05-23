@@ -1,6 +1,10 @@
 package net.kunmc.lab.superhot.listener;
 
+import net.kunmc.lab.superhot.GameManager;
 import net.kunmc.lab.superhot.Superhot;
+import net.kunmc.lab.superhot.state.Attacking;
+import net.kunmc.lab.superhot.state.Moving;
+import net.kunmc.lab.superhot.state.Stopping;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,6 +17,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SuperhotGunUsedListener implements Listener {
+    GameManager manager = GameManager.getInstance();
+
     @EventHandler
     public void onUseSuperhotGun(PlayerInteractEvent e) {
         Action action = e.getAction();
@@ -27,7 +33,7 @@ public class SuperhotGunUsedListener implements Listener {
 
         Player p = e.getPlayer();
         Location launchedLoc = p.getLocation();
-        
+
         Snowball bullet = p.launchProjectile(Snowball.class);
         bullet.setMetadata(Superhot.METADATAKEY, new FixedMetadataValue(Superhot.getInstance(), null));
         bullet.setGravity(false);
@@ -41,5 +47,16 @@ public class SuperhotGunUsedListener implements Listener {
                 }
             }
         }.runTaskTimer(Superhot.getInstance(), 0, 20);
+
+        manager.changeState(new Attacking());
+        manager.updateAllEntities();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                manager.changeState(manager.isMainPlayerMoving() ? new Moving() : new Stopping());
+                manager.updateAllEntities();
+            }
+        }.runTaskLater(Superhot.getInstance(), 2);
     }
 }
