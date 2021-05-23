@@ -18,7 +18,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
 import java.util.UUID;
 
 public class GameManager {
@@ -77,8 +76,7 @@ public class GameManager {
 
     public void changeState(IState state) {
         this.state = state;
-        Bukkit.getScheduler().runTask(Superhot.getInstance(), () ->
-                Bukkit.getPluginManager().callEvent(new StateChangeEvent(state.getClass())));
+        Bukkit.getScheduler().runTask(Superhot.getInstance(), () -> Bukkit.getPluginManager().callEvent(new StateChangeEvent(state.getClass())));
     }
 
     public void restoreEntityState(Entity entity) {
@@ -99,11 +97,15 @@ public class GameManager {
     public void updateAllEntities() {
         Player p = Bukkit.getPlayer(mainPlayerUUID);
         if (p == null) return;
-        List<Entity> entityList = Bukkit.selectEntities(p, "@e");
-        entityList.parallelStream().forEach(x -> {
-            if (x.equals(p)) return;
-            if (x instanceof Player)
-                if (Utils.isCreativeOrAdventure(((Player) x))) return;
+        
+        Bukkit.selectEntities(p, "@e").parallelStream().forEach(x -> {
+            if (x.equals(p)) {
+                return;
+            }
+
+            if (x instanceof Player && Utils.isCreativeOrAdventure(((Player) x))) {
+                return;
+            }
 
             updateEntity(x);
         });

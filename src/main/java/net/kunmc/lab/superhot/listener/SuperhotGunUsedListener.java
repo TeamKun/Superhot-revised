@@ -16,12 +16,18 @@ public class SuperhotGunUsedListener implements Listener {
     @EventHandler
     public void onUseSuperhotGun(PlayerInteractEvent e) {
         Action action = e.getAction();
+        if (action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.LEFT_CLICK_AIR)) {
+            return;
+        }
+
         Material material = e.getMaterial();
-        if (action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.LEFT_CLICK_AIR)) return;
-        if (!material.equals(Material.NETHERITE_SCRAP)) return;
+        if (!material.equals(Material.NETHERITE_SCRAP)) {
+            return;
+        }
 
         Player p = e.getPlayer();
         Location launchedLoc = p.getLocation();
+        
         Snowball bullet = p.launchProjectile(Snowball.class);
         bullet.setMetadata(Superhot.METADATAKEY, new FixedMetadataValue(Superhot.getInstance(), null));
         bullet.setGravity(false);
@@ -30,7 +36,9 @@ public class SuperhotGunUsedListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (bullet.getLocation().distance(launchedLoc) > 50.0) bullet.remove();
+                if (bullet.getLocation().distance(launchedLoc) > 50.0) {
+                    bullet.remove();
+                }
             }
         }.runTaskTimer(Superhot.getInstance(), 0, 20);
     }

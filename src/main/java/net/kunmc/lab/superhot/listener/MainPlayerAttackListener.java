@@ -16,9 +16,14 @@ public class MainPlayerAttackListener implements Listener {
 
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Player)) return;
+        if (!(e.getDamager() instanceof Player)) {
+            return;
+        }
+
         Player damager = ((Player) e.getDamager());
-        if (!damager.getUniqueId().equals(manager.getMainPlayerUUID())) return;
+        if (!damager.getUniqueId().equals(manager.getMainPlayerUUID())) {
+            return;
+        }
 
         manager.changeState(new Attacking());
         manager.updateAllEntities();

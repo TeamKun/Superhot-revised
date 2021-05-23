@@ -11,8 +11,13 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if (e.getPlayer().getUniqueId().equals(manager.getMainPlayerUUID())) return;
-        if (Utils.isCreativeOrAdventure(e.getPlayer())) return;
+        if (e.getPlayer().getUniqueId().equals(manager.getMainPlayerUUID())) {
+            return;
+        }
+        if (Utils.isCreativeOrAdventure(e.getPlayer())) {
+            return;
+        }
+        
         manager.updateEntity(e.getPlayer());
     }
 }

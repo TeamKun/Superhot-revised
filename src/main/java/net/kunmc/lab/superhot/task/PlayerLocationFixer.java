@@ -20,9 +20,13 @@ public class PlayerLocationFixer extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (manager.isMainPlayerMoving()) return;
+        if (manager.isMainPlayerMoving()) {
+            return;
+        }
+
         Player p = Bukkit.getPlayer(uuid);
-        if (p == null) return;
-        p.teleportAsync(loc);
+        if (p != null) {
+            p.teleportAsync(loc);
+        }
     }
 }

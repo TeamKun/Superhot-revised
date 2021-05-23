@@ -59,12 +59,14 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (args.length == 1)
+        if (args.length == 1) {
             return Stream.of("start", "stop").filter(x -> x.startsWith(args[0])).collect(Collectors.toList());
+        }
 
-        if (args.length == 2 && args[0].equalsIgnoreCase("start"))
+        if (args.length == 2 && args[0].equalsIgnoreCase("start")) {
             return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(x -> x.startsWith(args[1])).collect(Collectors.toList());
-
+        }
+        
         return Collections.emptyList();
     }
 }

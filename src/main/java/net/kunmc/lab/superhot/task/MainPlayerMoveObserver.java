@@ -18,9 +18,14 @@ public class MainPlayerMoveObserver extends BukkitRunnable {
     @Override
     public void run() {
         Player mainPlayer = Bukkit.getPlayer(manager.getMainPlayerUUID());
-        if (mainPlayer == null) return;
+        if (mainPlayer == null) {
+            return;
+        }
+        
         Location loc = mainPlayer.getLocation();
-        if (lastLoc == null) lastLoc = loc;
+        if (lastLoc == null) {
+            lastLoc = loc;
+        }
 
         double distance = loc.distance(lastLoc);
         double threshold;
@@ -30,6 +35,7 @@ public class MainPlayerMoveObserver extends BukkitRunnable {
         } else {
             threshold = 0.05;
         }
+
         boolean isMainPlayerMoving = distance >= threshold;
         if (manager.isMainPlayerMoving() ^ isMainPlayerMoving) {
             manager.changeState(isMainPlayerMoving ? new Moving() : new Stopping());

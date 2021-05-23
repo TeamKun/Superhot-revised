@@ -11,7 +11,9 @@ public class Moving implements IState {
     public void updateEntity(Entity entity) {
         entity.setGravity(true);
         Vector velocity = holder.getVelocity(entity);
-        if (velocity != null) entity.setVelocity(velocity);
+        if (velocity != null) {
+            entity.setVelocity(velocity);
+        }
 
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);

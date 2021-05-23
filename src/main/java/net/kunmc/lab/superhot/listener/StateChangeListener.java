@@ -42,20 +42,31 @@ public class StateChangeListener implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
+        if (Utils.isCreativeOrAdventure(p)) {
+            return;
+        }
+
         UUID uuid = p.getUniqueId();
-        if (uuid.equals(manager.getMainPlayerUUID())) return;
-        if (Utils.isCreativeOrAdventure(p)) return;
+        if (uuid.equals(manager.getMainPlayerUUID())) {
+            return;
+        }
 
         BukkitTask oldTask = playerLocationFixTasks.get(uuid);
-        if (oldTask != null) oldTask.cancel();
-
-        if (!manager.isMainPlayerMoving()) {
-            Location respawnLoc = p.getBedSpawnLocation();
-            if (respawnLoc == null) respawnLoc = p.getCompassTarget();
-
-            BukkitTask task = new PlayerLocationFixer(uuid, respawnLoc).runTaskTimer(Superhot.getInstance(), 0, 0);
-            playerLocationFixTasks.put(uuid, task);
+        if (oldTask != null) {
+            oldTask.cancel();
         }
+
+        if (manager.isMainPlayerMoving()) {
+            return;
+        }
+
+        Location respawnLoc = p.getBedSpawnLocation();
+        if (respawnLoc == null) {
+            respawnLoc = p.getCompassTarget();
+        }
+
+        BukkitTask task = new PlayerLocationFixer(uuid, respawnLoc).runTaskTimer(Superhot.getInstance(), 0, 0);
+        playerLocationFixTasks.put(uuid, task);
     }
 
     @EventHandler
@@ -63,7 +74,9 @@ public class StateChangeListener implements Listener {
         GameMode mode = e.getNewGameMode();
         if (mode.equals(GameMode.CREATIVE) || mode.equals(GameMode.SPECTATOR)) {
             BukkitTask task = playerLocationFixTasks.get(e.getPlayer().getUniqueId());
-            if (task != null) task.cancel();
+            if (task != null) {
+                task.cancel();
+            }
             manager.restoreEntityState(e.getPlayer());
         } else {
             UUID uuid = e.getPlayer().getUniqueId();

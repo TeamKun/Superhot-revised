@@ -12,11 +12,18 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 public class SuperhotBulletHitListener implements Listener {
     @EventHandler
     public void onBulletHit(ProjectileHitEvent e) {
-        if (!e.getEntity().hasMetadata(Superhot.METADATAKEY)) return;
+        if (!e.getEntity().hasMetadata(Superhot.METADATAKEY)) {
+            return;
+        }
+
         Entity hitEntity = e.getHitEntity();
-        if (!(hitEntity instanceof LivingEntity)) return;
-        if (hitEntity instanceof Player)
-            if (Utils.isCreativeOrAdventure(((Player) e.getHitEntity()))) return;
+        if (!(hitEntity instanceof LivingEntity)) {
+            return;
+        }
+        
+        if (hitEntity instanceof Player && Utils.isCreativeOrAdventure(((Player) e.getHitEntity()))) {
+            return;
+        }
 
         ((LivingEntity) hitEntity).setHealth(0.0);
     }
