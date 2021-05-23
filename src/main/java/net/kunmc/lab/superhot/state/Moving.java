@@ -10,7 +10,7 @@ public class Moving implements IState {
     @Override
     public void updateEntity(Entity entity) {
         entity.setGravity(true);
-        Vector velocity = holder.getVelocity(entity);
+        Vector velocity = holder.getVelocity(entity.getUniqueId());
         if (velocity != null) {
             entity.setVelocity(velocity);
         }

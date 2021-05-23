@@ -12,7 +12,7 @@ public class Stopping implements IState {
     @Override
     public void updateEntity(Entity entity) {
         entity.setGravity(false);
-        holder.storeVelocity(entity, entity.getVelocity());
+        holder.storeVelocity(entity.getUniqueId(), entity.getVelocity());
         entity.setVelocity(new Vector());
 
         if (entity instanceof LivingEntity) {

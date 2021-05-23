@@ -5,11 +5,19 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class Attacking implements IState {
+    EntityVelocityHolder holder = EntityVelocityHolder.getInstance();
+
     @Override
     public void updateEntity(Entity entity) {
         entity.setGravity(true);
+        Vector velocity = holder.getVelocity(entity.getUniqueId());
+        if (velocity != null) {
+            entity.setVelocity(velocity);
+        }
+        
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(true);
