@@ -1,10 +1,7 @@
 package net.kunmc.lab.superhot.state;
 
-import net.kunmc.lab.superhot.Superhot;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import net.kunmc.lab.superhot.Const;
+import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 public class Moving implements IState {
@@ -12,7 +9,6 @@ public class Moving implements IState {
 
     @Override
     public void updateEntity(Entity entity) {
-        entity.setGravity(true);
         Vector velocity = holder.getVelocity(entity.getUniqueId());
         if (velocity != null) {
             entity.setVelocity(velocity);
@@ -21,13 +17,25 @@ public class Moving implements IState {
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(true);
+            living.setGravity(true);
+            if (living instanceof Player) {
+                Player p = ((Player) living);
+                p.setAllowFlight(false);
+                p.setWalkSpeed(0.2F);
+                p.setFlySpeed(0.1F);
+                p.setGravity(true);
+            }
+            return;
         }
 
-        if (entity instanceof Player) {
-            Player p = ((Player) entity);
-            p.setAllowFlight(false);
-            p.setWalkSpeed(0.2F);
-            p.setFlySpeed(0.1F);
+        if (entity.hasMetadata(Const.bulletMeta)) {
+            return;
+        }
+
+        if (entity instanceof Projectile) {
+            Projectile projectile = ((Projectile) entity);
+            projectile.setGravity(true);
+            return;
         }
 
         if (entity instanceof Item) {
@@ -35,10 +43,9 @@ public class Moving implements IState {
             item.setCanMobPickup(true);
             item.setCanPlayerPickup(true);
             item.setPickupDelay(8);
+            return;
         }
-
-        if (entity.hasMetadata(Superhot.METADATAKEY)) {
-            entity.setGravity(false);
-        }
+        
+        entity.setGravity(true);
     }
 }

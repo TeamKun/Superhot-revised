@@ -3,12 +3,14 @@ package net.kunmc.lab.superhot;
 import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.listener.*;
 import net.kunmc.lab.superhot.state.IState;
+import net.kunmc.lab.superhot.state.Moving;
 import net.kunmc.lab.superhot.state.Stopping;
 import net.kunmc.lab.superhot.task.MainPlayerMoveObserver;
 import net.kunmc.lab.superhot.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -17,6 +19,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -49,6 +52,7 @@ public class GameManager {
         pluginManager.registerEvents(new ProjectileHitListener(), plugin);
         pluginManager.registerEvents(new SuperhotBulletHitListener(), plugin);
         pluginManager.registerEvents(new SuperhotGunUsedListener(), plugin);
+        pluginManager.registerEvents(new ItemDropListener(), plugin);
 
         new MainPlayerMoveObserver()
                 .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
@@ -69,6 +73,7 @@ public class GameManager {
         PlayerInteractEvent.getHandlerList().unregister(plugin);
         PlayerRespawnEvent.getHandlerList().unregister(plugin);
         PlayerGameModeChangeEvent.getHandlerList().unregister(plugin);
+        PlayerDropItemEvent.getHandlerList().unregister(plugin);
 
         Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
@@ -92,12 +97,19 @@ public class GameManager {
             p.setWalkSpeed(0.2F);
             p.setFlySpeed(0.1F);
         }
+
+        if (entity instanceof Item) {
+            Item item = ((Item) entity);
+            item.setCanMobPickup(true);
+            item.setCanPlayerPickup(true);
+            item.setPickupDelay(20);
+        }
     }
 
     public void updateAllEntities() {
         Player p = Bukkit.getPlayer(mainPlayerUUID);
         if (p == null) return;
-        
+
         Bukkit.selectEntities(p, "@e").parallelStream().forEach(x -> {
             if (x.equals(p)) {
                 return;
@@ -133,5 +145,18 @@ public class GameManager {
 
     public void setMainPlayerUUID(UUID uuid) {
         mainPlayerUUID = uuid;
+    }
+
+    public void advanceTime(long tick) {
+        changeState(new Moving());
+        updateAllEntities();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                changeState(isMainPlayerMoving ? new Moving() : new Stopping());
+                updateAllEntities();
+            }
+        }.runTaskLater(Superhot.getInstance(), tick);
     }
 }

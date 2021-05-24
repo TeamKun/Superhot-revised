@@ -1,9 +1,7 @@
 package net.kunmc.lab.superhot.state;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import net.kunmc.lab.superhot.Const;
+import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 public class Stopping implements IState {
@@ -11,7 +9,6 @@ public class Stopping implements IState {
 
     @Override
     public void updateEntity(Entity entity) {
-        entity.setGravity(false);
         Vector velocity = entity.getVelocity();
         if (!velocity.equals(new Vector())) {
             holder.storeVelocity(entity.getUniqueId(), entity.getVelocity());
@@ -21,19 +18,33 @@ public class Stopping implements IState {
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(false);
+            living.setGravity(false);
+            if (living instanceof Player) {
+                Player p = ((Player) living);
+                p.setAllowFlight(true);
+                p.setWalkSpeed(0.0F);
+                p.setFlySpeed(0.0F);
+            }
+            return;
         }
 
-        if (entity instanceof Player) {
-            Player p = ((Player) entity);
-            p.setAllowFlight(true);
-            p.setWalkSpeed(0.0F);
-            p.setFlySpeed(0.0F);
+        if (entity.hasMetadata(Const.bulletMeta)) {
+            return;
+        }
+
+        if (entity instanceof Projectile) {
+            Projectile projectile = ((Projectile) entity);
+            projectile.setGravity(false);
+            return;
         }
 
         if (entity instanceof Item) {
             Item item = ((Item) entity);
             item.setCanMobPickup(false);
             item.setCanPlayerPickup(false);
+            return;
         }
+
+        entity.setGravity(false);
     }
 }

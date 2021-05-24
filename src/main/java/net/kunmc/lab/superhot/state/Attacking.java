@@ -1,6 +1,6 @@
 package net.kunmc.lab.superhot.state;
 
-import net.kunmc.lab.superhot.Superhot;
+import net.kunmc.lab.superhot.Const;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -37,8 +37,8 @@ public class Attacking implements IState {
             item.setPickupDelay(8);
         }
 
-        if (entity.hasMetadata(Superhot.METADATAKEY)) {
-            entity.setGravity(false);
+        if (entity.hasMetadata(Const.bulletMeta)) {
+            return;
         }
     }
 }
