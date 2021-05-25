@@ -7,3 +7,4 @@ commands:
     usage: |-
       /superhot start <player>
       /superhot stop
+    default: op
