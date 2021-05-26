@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class ItemDropListener implements Listener {
-    GameManager manager = GameManager.getInstance();
+    private final GameManager manager = GameManager.getInstance();
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {

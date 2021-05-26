@@ -9,7 +9,6 @@ import net.kunmc.lab.superhot.state.Stopping;
 import net.kunmc.lab.superhot.task.MainPlayerMoveObserver;
 import net.kunmc.lab.superhot.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -120,7 +119,8 @@ public class GameManager {
 
         if (entity instanceof Player) {
             Player p = ((Player) entity);
-            p.setAllowFlight(p.getGameMode().equals(GameMode.SPECTATOR) || p.getGameMode().equals(GameMode.CREATIVE));
+            p.setAllowFlight(Utils.isCreativeOrSpectator(p));
+            p.setFlying(Utils.isCreativeOrSpectator(p) && p.isFlying());
             p.setWalkSpeed(0.2F);
             p.setFlySpeed(0.1F);
         }
@@ -142,7 +142,7 @@ public class GameManager {
                 return;
             }
 
-            if (x instanceof Player && Utils.isCreativeOrAdventure(((Player) x))) {
+            if (x instanceof Player && Utils.isCreativeOrSpectator(((Player) x))) {
                 return;
             }
 

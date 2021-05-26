@@ -31,7 +31,7 @@ public class StateChangeListener implements Listener {
             Bukkit.getOnlinePlayers().forEach(p -> {
                 UUID uuid = p.getUniqueId();
                 if (uuid.equals(manager.getMainPlayerUUID())) return;
-                if (Utils.isCreativeOrAdventure(p)) return;
+                if (Utils.isCreativeOrSpectator(p)) return;
 
                 BukkitTask task = new PlayerLocationFixer(uuid, p.getLocation()).runTaskTimer(Superhot.getInstance(), 0, 0);
                 playerLocationFixTasks.put(uuid, task);
@@ -42,7 +42,7 @@ public class StateChangeListener implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
-        if (Utils.isCreativeOrAdventure(p)) {
+        if (Utils.isCreativeOrSpectator(p)) {
             return;
         }
 

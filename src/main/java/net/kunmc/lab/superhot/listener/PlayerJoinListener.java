@@ -14,10 +14,10 @@ public class PlayerJoinListener implements Listener {
         if (e.getPlayer().getUniqueId().equals(manager.getMainPlayerUUID())) {
             return;
         }
-        if (Utils.isCreativeOrAdventure(e.getPlayer())) {
+        if (Utils.isCreativeOrSpectator(e.getPlayer())) {
             return;
         }
-        
+
         manager.updateEntity(e.getPlayer());
     }
 }

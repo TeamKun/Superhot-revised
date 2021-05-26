@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 
 public class SuperhotBulletHitListener implements Listener {
-    GameManager manager = GameManager.getInstance();
+    private final GameManager manager = GameManager.getInstance();
 
     @EventHandler
     public void onBulletHit(ProjectileHitEvent e) {
@@ -24,7 +24,7 @@ public class SuperhotBulletHitListener implements Listener {
             return;
         }
 
-        if (hitEntity instanceof Player && Utils.isCreativeOrAdventure(((Player) e.getHitEntity()))) {
+        if (hitEntity instanceof Player && Utils.isCreativeOrSpectator(((Player) e.getHitEntity()))) {
             return;
         }
 
