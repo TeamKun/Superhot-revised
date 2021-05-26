@@ -22,6 +22,7 @@ public class Stopping implements IState {
             if (living instanceof Player) {
                 Player p = ((Player) living);
                 p.setAllowFlight(true);
+                p.setFlying(true);
                 p.setWalkSpeed(0.0F);
                 p.setFlySpeed(0.0F);
             }

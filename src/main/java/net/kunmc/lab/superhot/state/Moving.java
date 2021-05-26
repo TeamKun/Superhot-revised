@@ -21,6 +21,7 @@ public class Moving implements IState {
             if (living instanceof Player) {
                 Player p = ((Player) living);
                 p.setAllowFlight(false);
+                p.setFlying(false);
                 p.setWalkSpeed(0.2F);
                 p.setFlySpeed(0.1F);
                 p.setGravity(true);
@@ -45,7 +46,7 @@ public class Moving implements IState {
             item.setPickupDelay(8);
             return;
         }
-        
+
         entity.setGravity(true);
     }
 }
