@@ -32,7 +32,7 @@ public class SuperhotGunUsedListener implements Listener {
 
         ItemStack item = e.getItem();
         if (item == null) return;
-        if (!item.getType().equals(Const.gunMaterial) || !Objects.equals(e.getItem().getItemMeta().displayName(), Const.gunName)) {
+        if (!item.getType().equals(Const.gunMaterial) || !e.getItem().getItemMeta().displayName().equals(Const.gunName)) {
             return;
         }
 
@@ -60,7 +60,5 @@ public class SuperhotGunUsedListener implements Listener {
                 }
             }
         }.runTaskTimer(Superhot.getInstance(), 0, 20);
-
-        manager.advanceTime(2);
     }
 }
