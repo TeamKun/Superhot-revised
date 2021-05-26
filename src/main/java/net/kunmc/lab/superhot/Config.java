@@ -1,5 +1,5 @@
 package net.kunmc.lab.superhot;
 
 public class Config {
-    public static int ammoAmount = 6;
+    public static int ammoAmount = 64;
 }

@@ -2,6 +2,7 @@ package net.kunmc.lab.superhot;
 
 import net.kunmc.lab.superhot.command.CommandHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Superhot extends JavaPlugin {
@@ -14,6 +15,11 @@ public final class Superhot extends JavaPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
+
+        saveDefaultConfig();
+        FileConfiguration config = getConfig();
+        Config.ammoAmount = config.getInt("ammoAmount");
+
         getServer().getPluginCommand("superhot").setExecutor(new CommandHandler());
         getServer().getPluginCommand("superhot").setTabCompleter(new CommandHandler());
     }
