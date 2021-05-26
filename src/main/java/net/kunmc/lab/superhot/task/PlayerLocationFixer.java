@@ -20,7 +20,7 @@ public class PlayerLocationFixer extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (manager.isMainPlayerMoving()) {
+        if (manager.isMovingState()) {
             return;
         }
 

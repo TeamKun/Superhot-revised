@@ -1,5 +1,6 @@
 package net.kunmc.lab.superhot;
 
+import com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent;
 import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.listener.*;
 import net.kunmc.lab.superhot.state.EntityVelocityHolder;
@@ -13,10 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -60,6 +58,9 @@ public class GameManager {
         pluginManager.registerEvents(new ItemDropListener(), plugin);
         pluginManager.registerEvents(new PlayerAttemptSwapListener(), plugin);
         pluginManager.registerEvents(new ProjectileLaunchEventListener(), plugin);
+        pluginManager.registerEvents(new NotMainPlayerActListener(), plugin);
+        pluginManager.registerEvents(new EntityCombustListener(), plugin);
+        pluginManager.registerEvents(new EntityDamageListener(), plugin);
 
         new MainPlayerMoveObserver()
                 .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
@@ -95,7 +96,14 @@ public class GameManager {
         PlayerGameModeChangeEvent.getHandlerList().unregister(plugin);
         PlayerDropItemEvent.getHandlerList().unregister(plugin);
         ProjectileLaunchEvent.getHandlerList().unregister(plugin);
-
+        PlayerLaunchProjectileEvent.getHandlerList().unregister(plugin);
+        EntityCombustEvent.getHandlerList().unregister(plugin);
+        EntityCombustByEntityEvent.getHandlerList().unregister(plugin);
+        EntityCombustByBlockEvent.getHandlerList().unregister(plugin);
+        EntityDamageEvent.getHandlerList().unregister(plugin);
+        EntityDamageByBlockEvent.getHandlerList().unregister(plugin);
+        EntityDamageByEntityEvent.getHandlerList().unregister(plugin);
+        
         Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
     }
@@ -150,6 +158,10 @@ public class GameManager {
         });
     }
 
+    public boolean isMovingState() {
+        return this.state.getClass().equals(Moving.class);
+    }
+
     public void updateEntity(Entity entity) {
         state.updateEntity(entity);
     }
@@ -168,10 +180,6 @@ public class GameManager {
 
     public UUID getMainPlayerUUID() {
         return mainPlayerUUID;
-    }
-
-    public void setMainPlayerUUID(UUID uuid) {
-        mainPlayerUUID = uuid;
     }
 
     public void advanceTime(long tick) {
