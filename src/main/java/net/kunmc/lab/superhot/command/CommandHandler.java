@@ -77,6 +77,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                         Config.ammoAmount = amount;
                         sender.sendMessage(ChatColor.GREEN + "ammoAmountの値を" + amount + "に変更しました.");
                         break;
+                    case "GlowMode":
                     default:
                         sender.sendMessage(ChatColor.RED + "不明な項目です.");
                 }

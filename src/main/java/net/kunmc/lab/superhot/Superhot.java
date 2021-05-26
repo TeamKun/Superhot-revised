@@ -19,6 +19,7 @@ public final class Superhot extends JavaPlugin {
         saveDefaultConfig();
         FileConfiguration config = getConfig();
         Config.ammoAmount = config.getInt("ammoAmount");
+        Config.isGlowModeEnabled = config.getBoolean("GlowMode");
 
         getServer().getPluginCommand("superhot").setExecutor(new CommandHandler());
         getServer().getPluginCommand("superhot").setTabCompleter(new CommandHandler());
@@ -28,6 +29,10 @@ public final class Superhot extends JavaPlugin {
     public void onDisable() {
         GameManager manager = GameManager.getInstance();
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(manager::restoreEntityState);
+
+        FileConfiguration config = getConfig();
+        config.set("ammoAmount", Config.ammoAmount);
+        config.set("GlowMode", Config.isGlowModeEnabled);
     }
 }
 
