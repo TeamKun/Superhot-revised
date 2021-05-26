@@ -17,6 +17,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -57,6 +59,19 @@ public class GameManager {
 
         new MainPlayerMoveObserver()
                 .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
+
+        ItemStack gun = new ItemStack(Const.gunMaterial);
+        ItemMeta gunItemMeta = gun.getItemMeta();
+        gunItemMeta.displayName(Const.gunName);
+        gun.setItemMeta(gunItemMeta);
+
+        ItemStack ammo = new ItemStack(Const.ammoMaterial);
+        ammo.setAmount(6);
+        ItemMeta ammoItemMeta = ammo.getItemMeta();
+        ammoItemMeta.displayName(Const.ammoName);
+        ammo.setItemMeta(ammoItemMeta);
+
+        Bukkit.getOnlinePlayers().forEach(x -> x.getInventory().addItem(gun, ammo));
     }
 
     public void stop() {

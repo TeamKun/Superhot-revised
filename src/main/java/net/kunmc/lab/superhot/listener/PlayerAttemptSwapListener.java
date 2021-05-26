@@ -26,7 +26,9 @@ public class PlayerAttemptSwapListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (e.getItem() != null && e.getItem().getType().equals(Material.NETHERITE_SCRAP)) return;
+        if (e.getItem() != null && e.getItem().getType().equals(Material.NETHERITE_SCRAP)) {
+            return;
+        }
 
         Player p = e.getPlayer();
         UUID uuid = p.getUniqueId();

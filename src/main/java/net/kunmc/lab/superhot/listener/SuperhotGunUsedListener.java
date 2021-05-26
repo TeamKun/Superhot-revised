@@ -11,32 +11,48 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SuperhotGunUsedListener implements Listener {
     GameManager manager = GameManager.getInstance();
 
     @EventHandler
     public void onUseSuperhotGun(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
         Action action = e.getAction();
         if (action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.LEFT_CLICK_AIR)) {
             return;
         }
 
         Material material = e.getMaterial();
-        if (!material.equals(Material.NETHERITE_SCRAP)) {
+        if (!material.equals(Const.gunMaterial)) {
             return;
         }
 
-        Player p = e.getPlayer();
-        Location launchedLoc = p.getLocation();
+        Inventory inventory = p.getInventory();
+        Map<Integer, ItemStack> ammoMap = inventory.all(Const.ammoMaterial).entrySet().stream()
+                .filter(x -> Objects.equals(x.getValue().getItemMeta().displayName(), Const.ammoName))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        if (ammoMap.isEmpty()) {
+            return;
+        }
+        ItemStack ammo = ammoMap.values().stream().findFirst().get();
+        ammo.setAmount(ammo.getAmount() - 1);
+
 
         Snowball bullet = p.launchProjectile(Snowball.class);
         bullet.setMetadata(Const.bulletMeta, new FixedMetadataValue(Superhot.getInstance(), null));
         bullet.setGravity(false);
 
         //50m飛んだら弾を削除する
+        Location launchedLoc = p.getLocation();
         new BukkitRunnable() {
             @Override
             public void run() {
