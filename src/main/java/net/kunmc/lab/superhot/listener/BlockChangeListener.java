@@ -3,13 +3,17 @@ package net.kunmc.lab.superhot.listener;
 import net.kunmc.lab.superhot.GameManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockGrowEvent;
-import org.bukkit.event.block.LeavesDecayEvent;
-import org.bukkit.event.block.NotePlayEvent;
+import org.bukkit.event.block.*;
 
 public class BlockChangeListener implements Listener {
     private final GameManager manager = GameManager.getInstance();
+
+    @EventHandler
+    public void onBlockIgnite(BlockIgniteEvent e) {
+        if (!manager.isMovingState()) {
+            e.setCancelled(true);
+        }
+    }
 
     @EventHandler
     public void onBlockBurn(BlockBurnEvent e) {
