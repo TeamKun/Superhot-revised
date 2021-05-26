@@ -37,7 +37,7 @@ public class ItemDropListener implements Listener {
                     if (x instanceof LivingEntity) {
                         LivingEntity living = ((LivingEntity) x);
                         if (!living.isDead()) {
-                            ((LivingEntity) x).setHealth(0.0);
+                            ((LivingEntity) x).damage(5);
                         }
                     }
                 });
