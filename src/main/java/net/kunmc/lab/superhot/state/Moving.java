@@ -43,7 +43,7 @@ public class Moving implements IState {
             Item item = ((Item) entity);
             item.setCanMobPickup(true);
             item.setCanPlayerPickup(true);
-            item.setPickupDelay(8);
+            item.setPickupDelay(16);
             return;
         }
 

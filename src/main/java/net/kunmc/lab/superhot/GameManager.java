@@ -168,7 +168,6 @@ public class GameManager {
         Player p = Bukkit.getPlayer(mainPlayerUUID);
         if (p == null) return;
 
-        Bukkit.getLogger().info(p.getWorld().toString());
         Bukkit.selectEntities(p, "@e").parallelStream().forEach(x -> {
             if (x.equals(p)) {
                 return;
