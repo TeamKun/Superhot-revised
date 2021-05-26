@@ -53,6 +53,7 @@ public class GameManager {
         pluginManager.registerEvents(new SuperhotBulletHitListener(), plugin);
         pluginManager.registerEvents(new SuperhotGunUsedListener(), plugin);
         pluginManager.registerEvents(new ItemDropListener(), plugin);
+        pluginManager.registerEvents(new PlayerAttemptSwapListener(), plugin);
 
         new MainPlayerMoveObserver()
                 .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
