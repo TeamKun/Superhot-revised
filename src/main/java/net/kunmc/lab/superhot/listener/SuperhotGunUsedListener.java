@@ -4,7 +4,6 @@ import net.kunmc.lab.superhot.Const;
 import net.kunmc.lab.superhot.GameManager;
 import net.kunmc.lab.superhot.Superhot;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -31,8 +30,9 @@ public class SuperhotGunUsedListener implements Listener {
             return;
         }
 
-        Material material = e.getMaterial();
-        if (!material.equals(Const.gunMaterial)) {
+        ItemStack item = e.getItem();
+        if (item == null) return;
+        if (!item.getType().equals(Const.gunMaterial) || !Objects.equals(e.getItem().getItemMeta().displayName(), Const.gunName)) {
             return;
         }
 
@@ -45,7 +45,6 @@ public class SuperhotGunUsedListener implements Listener {
         }
         ItemStack ammo = ammoMap.values().stream().findFirst().get();
         ammo.setAmount(ammo.getAmount() - 1);
-
 
         Snowball bullet = p.launchProjectile(Snowball.class);
         bullet.setMetadata(Const.bulletMeta, new FixedMetadataValue(Superhot.getInstance(), null));
