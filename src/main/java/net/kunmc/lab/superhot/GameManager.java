@@ -1,6 +1,7 @@
 package net.kunmc.lab.superhot;
 
 import com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent;
+import com.destroystokyo.paper.event.player.PlayerReadyArrowEvent;
 import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.listener.*;
 import net.kunmc.lab.superhot.state.EntityVelocityHolder;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -47,20 +49,22 @@ public class GameManager {
 
         JavaPlugin plugin = Superhot.getInstance();
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
-        pluginManager.registerEvents(new EntitySpawnListener(), plugin);
-        pluginManager.registerEvents(new MainPlayerAttackListener(), plugin);
-        pluginManager.registerEvents(new PlayerJoinListener(), plugin);
-        pluginManager.registerEvents(new PlayerQuitListener(), plugin);
-        pluginManager.registerEvents(new StateChangeListener(), plugin);
-        pluginManager.registerEvents(new ProjectileHitListener(), plugin);
-        pluginManager.registerEvents(new SuperhotBulletHitListener(), plugin);
-        pluginManager.registerEvents(new SuperhotGunUsedListener(), plugin);
-        pluginManager.registerEvents(new ItemDropListener(), plugin);
-        pluginManager.registerEvents(new PlayerAttemptSwapListener(), plugin);
-        pluginManager.registerEvents(new ProjectileLaunchEventListener(), plugin);
-        pluginManager.registerEvents(new NotMainPlayerActListener(), plugin);
+        pluginManager.registerEvents(new BlockChangeListener(), plugin);
         pluginManager.registerEvents(new EntityCombustListener(), plugin);
         pluginManager.registerEvents(new EntityDamageListener(), plugin);
+        pluginManager.registerEvents(new EntitySpawnListener(), plugin);
+        pluginManager.registerEvents(new ItemDropListener(), plugin);
+        pluginManager.registerEvents(new MainPlayerAttackListener(), plugin);
+        pluginManager.registerEvents(new NotMainPlayerActListener(), plugin);
+        pluginManager.registerEvents(new PlayerAttemptSwapListener(), plugin);
+        pluginManager.registerEvents(new PlayerJoinListener(), plugin);
+        pluginManager.registerEvents(new PlayerQuitListener(), plugin);
+        pluginManager.registerEvents(new ProjectileHitListener(), plugin);
+        pluginManager.registerEvents(new ProjectileLaunchEventListener(), plugin);
+        pluginManager.registerEvents(new StateChangeListener(), plugin);
+        pluginManager.registerEvents(new SuperhotBulletHitListener(), plugin);
+        pluginManager.registerEvents(new SuperhotGunUsedListener(), plugin);
+
 
         new MainPlayerMoveObserver()
                 .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
@@ -85,25 +89,35 @@ public class GameManager {
         isMainPlayerMoving = false;
 
         JavaPlugin plugin = Superhot.getInstance();
-        EntitySpawnEvent.getHandlerList().unregister(plugin);
-        EntityDamageByEntityEvent.getHandlerList().unregister(plugin);
-        PlayerJoinEvent.getHandlerList().unregister(plugin);
-        PlayerQuitEvent.getHandlerList().unregister(plugin);
-        StateChangeEvent.getHandlerList().unregister(plugin);
-        ProjectileHitEvent.getHandlerList().unregister(plugin);
-        PlayerInteractEvent.getHandlerList().unregister(plugin);
-        PlayerRespawnEvent.getHandlerList().unregister(plugin);
-        PlayerGameModeChangeEvent.getHandlerList().unregister(plugin);
-        PlayerDropItemEvent.getHandlerList().unregister(plugin);
-        ProjectileLaunchEvent.getHandlerList().unregister(plugin);
-        PlayerLaunchProjectileEvent.getHandlerList().unregister(plugin);
-        EntityCombustEvent.getHandlerList().unregister(plugin);
-        EntityCombustByEntityEvent.getHandlerList().unregister(plugin);
+        BlockBreakEvent.getHandlerList().unregister(plugin);
+        BlockBurnEvent.getHandlerList().unregister(plugin);
+        BlockDamageEvent.getHandlerList().unregister(plugin);
+        BlockGrowEvent.getHandlerList().unregister(plugin);
+        BlockPlaceEvent.getHandlerList().unregister(plugin);
+        EntityChangeBlockEvent.getHandlerList().unregister(plugin);
         EntityCombustByBlockEvent.getHandlerList().unregister(plugin);
-        EntityDamageEvent.getHandlerList().unregister(plugin);
+        EntityCombustByEntityEvent.getHandlerList().unregister(plugin);
+        EntityCombustEvent.getHandlerList().unregister(plugin);
         EntityDamageByBlockEvent.getHandlerList().unregister(plugin);
         EntityDamageByEntityEvent.getHandlerList().unregister(plugin);
-        
+        EntityDamageByEntityEvent.getHandlerList().unregister(plugin);
+        EntityDamageEvent.getHandlerList().unregister(plugin);
+        EntityShootBowEvent.getHandlerList().unregister(plugin);
+        EntitySpawnEvent.getHandlerList().unregister(plugin);
+        LeavesDecayEvent.getHandlerList().unregister(plugin);
+        NotePlayEvent.getHandlerList().unregister(plugin);
+        PlayerDropItemEvent.getHandlerList().unregister(plugin);
+        PlayerGameModeChangeEvent.getHandlerList().unregister(plugin);
+        PlayerInteractEvent.getHandlerList().unregister(plugin);
+        PlayerJoinEvent.getHandlerList().unregister(plugin);
+        PlayerLaunchProjectileEvent.getHandlerList().unregister(plugin);
+        PlayerQuitEvent.getHandlerList().unregister(plugin);
+        PlayerReadyArrowEvent.getHandlerList().unregister(plugin);
+        PlayerRespawnEvent.getHandlerList().unregister(plugin);
+        ProjectileHitEvent.getHandlerList().unregister(plugin);
+        ProjectileLaunchEvent.getHandlerList().unregister(plugin);
+        StateChangeEvent.getHandlerList().unregister(plugin);
+
         Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
     }
