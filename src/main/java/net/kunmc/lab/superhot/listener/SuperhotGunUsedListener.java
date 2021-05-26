@@ -1,6 +1,7 @@
 package net.kunmc.lab.superhot.listener;
 
 import net.kunmc.lab.superhot.Const;
+import net.kunmc.lab.superhot.GameManager;
 import net.kunmc.lab.superhot.Superhot;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -19,9 +20,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SuperhotGunUsedListener implements Listener {
+    GameManager manager = GameManager.getInstance();
+
     @EventHandler
     public void onUseSuperhotGun(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+        if (!p.getUniqueId().equals(manager.getMainPlayerUUID()) && !manager.isMainPlayerMoving()) {
+            return;
+        }
+
         Action action = e.getAction();
         if (action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.LEFT_CLICK_AIR)) {
             return;
