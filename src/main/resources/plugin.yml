@@ -7,4 +7,5 @@ commands:
     usage: |-
       /superhot start <player>
       /superhot stop
+      /superhot config <configItem> <value>
     default: op

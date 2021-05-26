@@ -71,7 +71,7 @@ public class GameManager {
         gun.setItemMeta(gunItemMeta);
 
         ItemStack ammo = new ItemStack(Const.ammoMaterial);
-        ammo.setAmount(6);
+        ammo.setAmount(Config.ammoAmount);
         ItemMeta ammoItemMeta = ammo.getItemMeta();
         ammoItemMeta.displayName(Const.ammoName);
         ammo.setItemMeta(ammoItemMeta);
@@ -112,7 +112,7 @@ public class GameManager {
         if (velocity != null) {
             entity.setVelocity(velocity);
         }
-        
+
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(true);
