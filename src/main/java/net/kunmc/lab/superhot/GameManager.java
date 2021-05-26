@@ -92,7 +92,9 @@ public class GameManager {
         BlockBreakEvent.getHandlerList().unregister(plugin);
         BlockBurnEvent.getHandlerList().unregister(plugin);
         BlockDamageEvent.getHandlerList().unregister(plugin);
+        BlockFromToEvent.getHandlerList().unregister(plugin);
         BlockGrowEvent.getHandlerList().unregister(plugin);
+        BlockIgniteEvent.getHandlerList().unregister(plugin);
         BlockPlaceEvent.getHandlerList().unregister(plugin);
         EntityChangeBlockEvent.getHandlerList().unregister(plugin);
         EntityCombustByBlockEvent.getHandlerList().unregister(plugin);

@@ -29,7 +29,7 @@ public class ItemDropListener implements Listener {
                     this.cancel();
                 }
 
-                item.getNearbyEntities(1, 1, 1).forEach(x -> {
+                item.getNearbyEntities(0.3, 0.3, 0.3).forEach(x -> {
                     if (x.getUniqueId().equals(item.getThrower())) {
                         return;
                     }
