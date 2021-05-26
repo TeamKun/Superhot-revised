@@ -1,5 +1,6 @@
 package net.kunmc.lab.superhot.listener;
 
+import net.kunmc.lab.superhot.Const;
 import net.kunmc.lab.superhot.GameManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,7 +27,14 @@ public class PlayerAttemptSwapListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (e.getItem() != null && e.getItem().getType().equals(Material.NETHERITE_SCRAP)) {
+        ItemStack item = e.getItem();
+        if (item == null) {
+            return;
+        }
+        if (item.getType().equals(Const.gunMaterial)) {
+            return;
+        }
+        if (!item.getType().equals(Const.swapToolMaterial) || !Objects.equals(item.getItemMeta().displayName(), Const.swapToolName)) {
             return;
         }
 
@@ -55,10 +63,24 @@ public class PlayerAttemptSwapListener implements Listener {
                 p.teleportAsync(targetPlayerLoc);
                 target.teleportAsync(mainPlayerLoc);
 
+                //swapToolは相手に渡さず保持するため退避させる
+                Map<Integer, ItemStack> swapToolMap = mainPlayerInv.all(Const.swapToolMaterial).entrySet().stream()
+                        .filter(x -> Objects.equals(x.getValue().getItemMeta().displayName(), Const.swapToolName))
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                mainPlayerInv.removeItem(swapToolMap.values().toArray(new ItemStack[0]));
+
                 ItemStack[] mainPlayerContents = mainPlayerInv.getContents();
                 ItemStack[] targetPlayerContents = targetPlayerInv.getContents();
                 mainPlayerInv.setContents(targetPlayerContents);
                 targetPlayerInv.setContents(mainPlayerContents);
+
+                Map<Integer, ItemStack> tmpItemMap = new HashMap<>();
+                for (int i : swapToolMap.keySet()) {
+                    tmpItemMap.put(i, mainPlayerInv.getItem(i));
+                    mainPlayerInv.setItem(i, swapToolMap.get(i));
+                }
+                mainPlayerInv.addItem(tmpItemMap.values().toArray(new ItemStack[0]));
+
                 p.updateInventory();
                 target.updateInventory();
                 break;

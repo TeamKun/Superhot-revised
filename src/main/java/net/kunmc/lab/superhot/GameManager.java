@@ -81,6 +81,13 @@ public class GameManager {
         ammo.setItemMeta(ammoItemMeta);
 
         Bukkit.getOnlinePlayers().forEach(x -> x.getInventory().addItem(gun, ammo));
+
+        ItemStack swapTool = new ItemStack(Const.swapToolMaterial);
+        ItemMeta swapToolItemMeta = swapTool.getItemMeta();
+        swapToolItemMeta.displayName(Const.swapToolName);
+        swapTool.setItemMeta(swapToolItemMeta);
+
+        target.getInventory().addItem(swapTool);
     }
 
     public void stop() {
