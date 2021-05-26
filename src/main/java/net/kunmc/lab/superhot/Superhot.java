@@ -33,6 +33,7 @@ public final class Superhot extends JavaPlugin {
         FileConfiguration config = getConfig();
         config.set("ammoAmount", Config.ammoAmount);
         config.set("GlowMode", Config.isGlowModeEnabled);
+        saveConfig();
     }
 }
 

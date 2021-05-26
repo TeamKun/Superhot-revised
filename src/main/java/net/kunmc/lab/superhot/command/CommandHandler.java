@@ -61,7 +61,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 }
 
                 switch (args[1]) {
-                    case "ammoAmount":
+                    case "AmmoAmount":
                         int amount;
                         try {
                             amount = Integer.parseInt(args[2]);
@@ -70,14 +70,17 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                             break;
                         }
                         if (amount < 1) {
-                            sender.sendMessage(ChatColor.RED + "ammoAmountの値は1以上の値を指定してください.");
+                            sender.sendMessage(ChatColor.RED + "AmmoAmountの値は1以上の値を指定してください.");
                             break;
                         }
 
                         Config.ammoAmount = amount;
-                        sender.sendMessage(ChatColor.GREEN + "ammoAmountの値を" + amount + "に変更しました.");
+                        sender.sendMessage(ChatColor.GREEN + "AmmoAmountの値を" + amount + "に変更しました.");
                         break;
                     case "GlowMode":
+                        Config.isGlowModeEnabled = Boolean.parseBoolean(args[2]);
+                        sender.sendMessage(ChatColor.GREEN + "GlowModeの値を" + Config.isGlowModeEnabled + "に変更しました.");
+                        break;
                     default:
                         sender.sendMessage(ChatColor.RED + "不明な項目です.");
                 }
@@ -99,14 +102,16 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 case "start":
                     return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(x -> x.startsWith(args[1])).collect(Collectors.toList());
                 case "config":
-                    return Stream.of("ammoAmount").filter(x -> x.startsWith(args[1])).collect(Collectors.toList());
+                    return Stream.of("AmmoAmount", "GlowMode").filter(x -> x.startsWith(args[1])).collect(Collectors.toList());
             }
         }
 
         if (args.length == 3) {
             switch (args[1]) {
-                case "ammoAmount":
+                case "AmmoAmount":
                     return Collections.singletonList("<amount>");
+                case "GlowMode":
+                    return Stream.of("true", "false").filter(x -> x.startsWith(args[2])).collect(Collectors.toList());
             }
         }
 
