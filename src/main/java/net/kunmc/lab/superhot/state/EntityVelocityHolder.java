@@ -5,7 +5,7 @@ import org.bukkit.util.Vector;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-class EntityVelocityHolder {
+public class EntityVelocityHolder {
     private final ConcurrentHashMap<UUID, Vector> entityVelocities = new ConcurrentHashMap<>();
     private static final EntityVelocityHolder singleton = new EntityVelocityHolder();
 

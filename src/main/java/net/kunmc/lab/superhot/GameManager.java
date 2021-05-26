@@ -2,6 +2,7 @@ package net.kunmc.lab.superhot;
 
 import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.listener.*;
+import net.kunmc.lab.superhot.state.EntityVelocityHolder;
 import net.kunmc.lab.superhot.state.IState;
 import net.kunmc.lab.superhot.state.Moving;
 import net.kunmc.lab.superhot.state.Stopping;
@@ -23,6 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
@@ -31,6 +33,7 @@ public class GameManager {
     private boolean isSuperhotEnabled;
     private boolean isMainPlayerMoving;
     private IState state = new Stopping();
+    private EntityVelocityHolder holder = EntityVelocityHolder.getInstance();
     private static final GameManager singleton = new GameManager();
 
     private GameManager() {
@@ -105,6 +108,11 @@ public class GameManager {
 
     public void restoreEntityState(Entity entity) {
         entity.setGravity(true);
+        Vector velocity = holder.getVelocity(entity.getUniqueId());
+        if (velocity != null) {
+            entity.setVelocity(velocity);
+        }
+        
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(true);
