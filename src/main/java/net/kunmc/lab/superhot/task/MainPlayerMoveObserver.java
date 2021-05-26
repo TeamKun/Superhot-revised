@@ -21,10 +21,15 @@ public class MainPlayerMoveObserver extends BukkitRunnable {
         if (mainPlayer == null) {
             return;
         }
-        
+
         Location loc = mainPlayer.getLocation();
         if (lastLoc == null) {
             lastLoc = loc;
+        }
+
+        if (!loc.getWorld().equals(lastLoc.getWorld())) {
+            lastLoc = loc;
+            return;
         }
 
         double distance = loc.distance(lastLoc);
