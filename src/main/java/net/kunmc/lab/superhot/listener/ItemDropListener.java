@@ -29,7 +29,7 @@ public class ItemDropListener implements Listener {
                     this.cancel();
                 }
 
-                item.getNearbyEntities(0.3, 0.3, 0.3).forEach(x -> {
+                item.getNearbyEntities(0.5, 0.6, 0.5).forEach(x -> {
                     if (x.getUniqueId().equals(item.getThrower())) {
                         return;
                     }
@@ -38,6 +38,8 @@ public class ItemDropListener implements Listener {
                         LivingEntity living = ((LivingEntity) x);
                         if (!living.isDead()) {
                             ((LivingEntity) x).damage(5);
+                            item.setGravity(true);
+                            this.cancel();
                         }
                     }
                 });
