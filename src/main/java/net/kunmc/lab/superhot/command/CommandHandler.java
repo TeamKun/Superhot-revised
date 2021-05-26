@@ -42,6 +42,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 }
 
                 manager.start(target);
+                sender.sendMessage(ChatColor.GREEN + "Superhotを有効化しました.");
                 break;
             case "stop":
                 if (!manager.isSuperhotEnabled()) {
@@ -50,6 +51,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 }
 
                 manager.stop();
+                sender.sendMessage(ChatColor.RED + "Superhotを無効化しました.");
                 break;
             default:
                 sender.sendMessage(ChatColor.RED + "不明なコマンドです.");
@@ -66,7 +68,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
         if (args.length == 2 && args[0].equalsIgnoreCase("start")) {
             return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(x -> x.startsWith(args[1])).collect(Collectors.toList());
         }
-        
+
         return Collections.emptyList();
     }
 }
