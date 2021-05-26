@@ -52,14 +52,14 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 }
 
                 manager.stop();
-                sender.sendMessage(ChatColor.RED + "Superhotを無効化しました.");
+                sender.sendMessage(ChatColor.GREEN + "Superhotを無効化しました.");
                 break;
             case "config":
                 if (args.length < 3) {
                     sender.sendMessage(ChatColor.RED + "usage: /superhot config <configItem> <value>");
                     break;
                 }
-                
+
                 switch (args[1]) {
                     case "ammoAmount":
                         int amount;
