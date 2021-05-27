@@ -8,4 +8,5 @@ commands:
       /superhot start <player>
       /superhot stop
       /superhot config <configItem> <value>
+      /superhot give <target> <item> [amount]
     default: op
