@@ -1,5 +1,6 @@
 package net.kunmc.lab.superhot.listener;
 
+import net.kunmc.lab.superhot.Config;
 import net.kunmc.lab.superhot.Const;
 import net.kunmc.lab.superhot.GameManager;
 import org.bukkit.Location;
@@ -44,8 +45,8 @@ public class PlayerAttemptSwapListener implements Listener {
             return;
         }
 
-        List<Block> blockList = p.getLineOfSight(transparentBlockSet, 32).stream()
-                .filter(x -> x.getLocation().distance(p.getLocation()) > 4.0)
+        List<Block> blockList = p.getLineOfSight(transparentBlockSet, Config.swapMaxDistance).stream()
+                .filter(x -> x.getLocation().distance(p.getLocation()) > Config.swapMinDistance)
                 .sorted(Comparator.comparing(b -> b.getLocation().distance(p.getLocation())))
                 .collect(Collectors.toList());
         for (Block block : blockList) {

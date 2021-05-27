@@ -17,8 +17,10 @@ public final class Superhot extends JavaPlugin {
 
         saveDefaultConfig();
         FileConfiguration config = getConfig();
-        Config.ammoAmount = config.getInt("ammoAmount");
+        Config.ammoAmount = config.getInt("AmmoAmount");
         Config.isGlowModeEnabled = config.getBoolean("GlowMode");
+        Config.swapMinDistance = config.getInt("SwapMinDistance");
+        Config.swapMaxDistance = config.getInt("SwapMaxDistance");
 
         getServer().getPluginCommand("superhot").setExecutor(new CommandHandler());
         getServer().getPluginCommand("superhot").setTabCompleter(new CommandHandler());

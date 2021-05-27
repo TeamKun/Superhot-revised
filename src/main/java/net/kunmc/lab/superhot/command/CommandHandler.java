@@ -84,6 +84,38 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                         Config.isGlowModeEnabled = Boolean.parseBoolean(args[2]);
                         sender.sendMessage(ChatColor.GREEN + "GlowModeの値を" + Config.isGlowModeEnabled + "に変更しました.");
                         break;
+                    case "SwapMinDistance":
+                        int minDistance;
+                        try {
+                            minDistance = Integer.parseInt(args[2]);
+                        } catch (NumberFormatException e) {
+                            sender.sendMessage(ChatColor.RED + args[2] + "は不正な値です.");
+                            break;
+                        }
+                        if (minDistance < 1) {
+                            sender.sendMessage(ChatColor.RED + "SwapMinDistanceの値は1以上の値を指定してください.");
+                            break;
+                        }
+
+                        Config.swapMinDistance = minDistance;
+                        sender.sendMessage(ChatColor.GREEN + "SwapMinDistanceの値を" + minDistance + "に変更しました.");
+                        break;
+                    case "SwapMaxDistance":
+                        int maxDistance;
+                        try {
+                            maxDistance = Integer.parseInt(args[2]);
+                        } catch (NumberFormatException e) {
+                            sender.sendMessage(ChatColor.RED + args[2] + "は不正な値です.");
+                            break;
+                        }
+                        if (maxDistance < 1) {
+                            sender.sendMessage(ChatColor.RED + "SwapMaxDistanceの値は1以上の値を指定してください.");
+                            break;
+                        }
+
+                        Config.swapMaxDistance = maxDistance;
+                        sender.sendMessage(ChatColor.GREEN + "SwapMaxDistanceの値を" + maxDistance + "に変更しました.");
+                        break;
                     default:
                         sender.sendMessage(ChatColor.RED + "不明な項目です.");
                 }
@@ -147,7 +179,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                             .filter(x -> x.startsWith(args[1]))
                             .collect(Collectors.toList());
                 case "config":
-                    return Stream.of("AmmoAmount", "GlowMode")
+                    return Stream.of("AmmoAmount", "GlowMode", "SwapMinDistance", "SwapMaxDistance")
                             .filter(x -> x.startsWith(args[1]))
                             .collect(Collectors.toList());
                 case "give":
@@ -165,6 +197,9 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                             return Collections.singletonList("<amount>");
                         case "GlowMode":
                             return Stream.of("true", "false").filter(x -> x.startsWith(args[2])).collect(Collectors.toList());
+                        case "SwapMinDistance":
+                        case "SwapMaxDistance":
+                            return Collections.singletonList("<distance>");
                     }
                     break;
                 case "give":

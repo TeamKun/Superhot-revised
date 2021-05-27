@@ -1,2 +1,4 @@
-ammoAmount: 64
+AmmoAmount: 64
 GlowMode: true
+SwapMinDistance: 4
+SwapMaxDistance: 32
