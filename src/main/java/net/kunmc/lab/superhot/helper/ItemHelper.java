@@ -10,6 +10,7 @@ public class ItemHelper {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(displayName);
+        meta.setCustomModelData(256);
         item.setItemMeta(meta);
         item.setAmount(amount);
         return item;
