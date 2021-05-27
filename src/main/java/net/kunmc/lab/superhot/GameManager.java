@@ -3,6 +3,7 @@ package net.kunmc.lab.superhot;
 import com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent;
 import com.destroystokyo.paper.event.player.PlayerReadyArrowEvent;
 import net.kunmc.lab.superhot.event.StateChangeEvent;
+import net.kunmc.lab.superhot.helper.ItemHelper;
 import net.kunmc.lab.superhot.listener.*;
 import net.kunmc.lab.superhot.state.EntityVelocityHolder;
 import net.kunmc.lab.superhot.state.IState;
@@ -19,7 +20,6 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -65,28 +65,14 @@ public class GameManager {
         pluginManager.registerEvents(new SuperhotBulletHitListener(), plugin);
         pluginManager.registerEvents(new SuperhotGunUsedListener(), plugin);
 
-
         new MainPlayerMoveObserver()
                 .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
 
-        ItemStack gun = new ItemStack(Const.gunMaterial);
-        ItemMeta gunItemMeta = gun.getItemMeta();
-        gunItemMeta.displayName(Const.gunName);
-        gun.setItemMeta(gunItemMeta);
-
-        ItemStack ammo = new ItemStack(Const.ammoMaterial);
-        ammo.setAmount(Config.ammoAmount);
-        ItemMeta ammoItemMeta = ammo.getItemMeta();
-        ammoItemMeta.displayName(Const.ammoName);
-        ammo.setItemMeta(ammoItemMeta);
+        ItemStack gun = ItemHelper.createItem(Const.gunMaterial, Const.gunName, 1);
+        ItemStack ammo = ItemHelper.createItem(Const.ammoMaterial, Const.ammoName, Config.ammoAmount);
+        ItemStack swapTool = ItemHelper.createItem(Const.swapToolMaterial, Const.swapToolName, 1);
 
         Bukkit.getOnlinePlayers().forEach(x -> x.getInventory().addItem(gun, ammo));
-
-        ItemStack swapTool = new ItemStack(Const.swapToolMaterial);
-        ItemMeta swapToolItemMeta = swapTool.getItemMeta();
-        swapToolItemMeta.displayName(Const.swapToolName);
-        swapTool.setItemMeta(swapToolItemMeta);
-
         target.getInventory().addItem(swapTool);
     }
 
