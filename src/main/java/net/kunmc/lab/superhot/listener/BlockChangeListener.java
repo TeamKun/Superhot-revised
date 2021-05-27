@@ -9,6 +9,13 @@ public class BlockChangeListener implements Listener {
     private final GameManager manager = GameManager.getInstance();
 
     @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        if (e.getPlayer().getUniqueId().equals(manager.getMainPlayerUUID())) {
+            manager.advanceTime(2);
+        }
+    }
+
+    @EventHandler
     public void onBlockIgnite(BlockIgniteEvent e) {
         if (!manager.isStateMoving()) {
             e.setCancelled(true);
