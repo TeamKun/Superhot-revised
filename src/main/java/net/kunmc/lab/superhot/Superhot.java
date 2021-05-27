@@ -1,7 +1,6 @@
 package net.kunmc.lab.superhot;
 
 import net.kunmc.lab.superhot.command.CommandHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,7 +27,7 @@ public final class Superhot extends JavaPlugin {
     @Override
     public void onDisable() {
         GameManager manager = GameManager.getInstance();
-        Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(manager::restoreEntityState);
+        manager.stop();
 
         FileConfiguration config = getConfig();
         config.set("ammoAmount", Config.ammoAmount);

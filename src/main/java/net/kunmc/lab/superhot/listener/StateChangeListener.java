@@ -77,16 +77,22 @@ public class StateChangeListener implements Listener {
     @EventHandler
     public void onGameModeChange(PlayerGameModeChangeEvent e) {
         GameMode mode = e.getNewGameMode();
+        UUID uuid = e.getPlayer().getUniqueId();
+
         if (mode.equals(GameMode.CREATIVE) || mode.equals(GameMode.SPECTATOR)) {
-            BukkitTask task = playerLocationFixTasks.get(e.getPlayer().getUniqueId());
+            BukkitTask task = playerLocationFixTasks.get(uuid);
             if (task != null) {
                 task.cancel();
             }
-            manager.restoreEntityState(e.getPlayer());
-        } else {
-            UUID uuid = e.getPlayer().getUniqueId();
+
+            Player p = e.getPlayer();
+            manager.restoreEntityState(p);
+            manager.removeFromTeam(p);
+        } else if (!uuid.equals(manager.getMainPlayerUUID())) {
             BukkitTask task = new PlayerLocationFixer(uuid, e.getPlayer().getLocation()).runTaskTimer(Superhot.getInstance(), 0, 0);
             playerLocationFixTasks.put(uuid, task);
+
+            manager.addToTeam(e.getPlayer());
         }
     }
 }

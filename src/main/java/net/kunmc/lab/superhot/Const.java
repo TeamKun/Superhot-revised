@@ -11,4 +11,5 @@ public class Const {
     public static final Material ammoMaterial = Material.PRISMARINE_CRYSTALS;
     public static final Component swapToolName = Component.text("SuperhotSwapTool");
     public static final Material swapToolMaterial = Material.NETHER_STAR;
+    public static final String enemyTeamName = "SuperhotEnemy";
 }

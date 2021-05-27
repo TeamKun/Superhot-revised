@@ -2,6 +2,7 @@ package net.kunmc.lab.superhot.listener;
 
 import net.kunmc.lab.superhot.GameManager;
 import net.kunmc.lab.superhot.util.Utils;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -18,6 +19,8 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        manager.updateEntity(e.getPlayer());
+        Player p = e.getPlayer();
+        manager.addToTeam(p);
+        manager.updateEntity(p);
     }
 }

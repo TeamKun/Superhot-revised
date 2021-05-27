@@ -11,6 +11,7 @@ import net.kunmc.lab.superhot.state.Moving;
 import net.kunmc.lab.superhot.state.Stopping;
 import net.kunmc.lab.superhot.task.MainPlayerMoveObserver;
 import net.kunmc.lab.superhot.util.Utils;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -23,8 +24,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class GameManager {
@@ -74,6 +77,13 @@ public class GameManager {
 
         Bukkit.getOnlinePlayers().forEach(x -> x.getInventory().addItem(gun, ammo));
         target.getInventory().addItem(swapTool);
+
+        Team enemyTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(Const.enemyTeamName);
+        enemyTeam.color(NamedTextColor.RED);
+        Bukkit.getOnlinePlayers().stream()
+                .filter(x -> !x.getUniqueId().equals(mainPlayerUUID))
+                .filter(x -> !Utils.isCreativeOrSpectator(x))
+                .forEach(this::addToTeam);
     }
 
     public void stop() {
@@ -115,6 +125,9 @@ public class GameManager {
 
         Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
+
+        Bukkit.getOnlinePlayers().forEach(this::removeFromTeam);
+        Objects.requireNonNull(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(Const.enemyTeamName)).unregister();
     }
 
     public void changeState(IState state) {
@@ -202,5 +215,27 @@ public class GameManager {
                 updateAllEntities();
             }
         }.runTaskLater(Superhot.getInstance(), tick);
+    }
+
+    public void addToTeam(Player target) {
+        if (Config.isGlowModeEnabled) {
+            Team enemyTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(Const.enemyTeamName);
+            if (enemyTeam == null) {
+                return;
+            }
+            enemyTeam.addEntry(target.getName());
+            target.setGlowing(true);
+        }
+    }
+
+    public void removeFromTeam(Player target) {
+        if (Config.isGlowModeEnabled) {
+            Team enemyTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(Const.enemyTeamName);
+            if (enemyTeam == null) {
+                return;
+            }
+            enemyTeam.removeEntry(target.getName());
+            target.setGlowing(false);
+        }
     }
 }
