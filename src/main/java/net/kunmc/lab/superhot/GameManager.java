@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
@@ -63,7 +64,7 @@ public class GameManager {
         pluginManager.registerEvents(new PlayerJoinListener(), plugin);
         pluginManager.registerEvents(new PlayerQuitListener(), plugin);
         pluginManager.registerEvents(new ProjectileHitListener(), plugin);
-        pluginManager.registerEvents(new ProjectileLaunchEventListener(), plugin);
+        pluginManager.registerEvents(new ProjectileLaunchListener(), plugin);
         pluginManager.registerEvents(new StateChangeListener(), plugin);
         pluginManager.registerEvents(new SuperhotBulletHitListener(), plugin);
         pluginManager.registerEvents(new SuperhotGunUsedListener(), plugin);
@@ -78,7 +79,11 @@ public class GameManager {
         Bukkit.getOnlinePlayers().forEach(x -> x.getInventory().addItem(gun, ammo));
         target.getInventory().addItem(swapTool);
 
-        Team enemyTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(Const.enemyTeamName);
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team enemyTeam = scoreboard.getTeam(Const.enemyTeamName);
+        if (enemyTeam == null) {
+            enemyTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(Const.enemyTeamName);
+        }
         enemyTeam.color(NamedTextColor.RED);
         Bukkit.getOnlinePlayers().stream()
                 .filter(x -> !x.getUniqueId().equals(mainPlayerUUID))
@@ -126,7 +131,6 @@ public class GameManager {
         Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
 
-        Bukkit.getOnlinePlayers().forEach(this::removeFromTeam);
         Objects.requireNonNull(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(Const.enemyTeamName)).unregister();
     }
 
@@ -153,6 +157,7 @@ public class GameManager {
             p.setFlying(Utils.isCreativeOrSpectator(p) && p.isFlying());
             p.setWalkSpeed(0.2F);
             p.setFlySpeed(0.1F);
+            removeFromTeam(p);
         }
 
         if (entity instanceof Item) {
@@ -161,6 +166,10 @@ public class GameManager {
             item.setCanPlayerPickup(true);
             item.setPickupDelay(20);
         }
+    }
+
+    public void updateEntity(Entity entity) {
+        state.updateEntity(entity);
     }
 
     public void updateAllEntities() {
@@ -180,12 +189,8 @@ public class GameManager {
         });
     }
 
-    public boolean isMovingState() {
+    public boolean isStateMoving() {
         return this.state.getClass().equals(Moving.class);
-    }
-
-    public void updateEntity(Entity entity) {
-        state.updateEntity(entity);
     }
 
     public boolean isMainPlayerMoving() {

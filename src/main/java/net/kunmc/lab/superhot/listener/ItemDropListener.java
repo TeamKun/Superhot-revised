@@ -16,6 +16,11 @@ public class ItemDropListener implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
+        if (!e.getPlayer().getUniqueId().equals(manager.getMainPlayerUUID())) {
+            e.setCancelled(true);
+            return;
+        }
+
         Item item = e.getItemDrop();
         item.setGravity(false);
         item.setVelocity(e.getPlayer().getLocation().getDirection().multiply(new Vector(0.7, 1, 0.7)));

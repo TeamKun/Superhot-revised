@@ -10,35 +10,35 @@ public class BlockChangeListener implements Listener {
 
     @EventHandler
     public void onBlockIgnite(BlockIgniteEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onBlockBurn(BlockBurnEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onBlockGrow(BlockGrowEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onNotePlay(NotePlayEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onLeavesDecay(LeavesDecayEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }

@@ -56,7 +56,7 @@ public class StateChangeListener implements Listener {
             oldTask.cancel();
         }
 
-        if (manager.isMovingState()) {
+        if (manager.isStateMoving()) {
             return;
         }
 
@@ -68,7 +68,7 @@ public class StateChangeListener implements Listener {
         BukkitTask task = new PlayerLocationFixer(uuid, respawnLoc).runTaskTimer(Superhot.getInstance(), 0, 0);
         playerLocationFixTasks.put(uuid, task);
 
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             p.setAllowFlight(true);
             p.setFlying(true);
         }

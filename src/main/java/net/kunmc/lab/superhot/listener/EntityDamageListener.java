@@ -13,21 +13,21 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamageByBlock(EntityDamageByBlockEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }

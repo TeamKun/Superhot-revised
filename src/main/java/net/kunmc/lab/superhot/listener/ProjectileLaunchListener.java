@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
-public class ProjectileLaunchEventListener implements Listener {
+public class ProjectileLaunchListener implements Listener {
     private final GameManager manager = GameManager.getInstance();
 
     @EventHandler

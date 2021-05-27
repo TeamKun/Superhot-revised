@@ -25,7 +25,7 @@ public class SuperhotGunUsedListener implements Listener {
     @EventHandler
     public void onUseSuperhotGun(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (!p.getUniqueId().equals(manager.getMainPlayerUUID()) && !manager.isMovingState()) {
+        if (!p.getUniqueId().equals(manager.getMainPlayerUUID()) && !manager.isStateMoving()) {
             return;
         }
 

@@ -13,21 +13,21 @@ public class EntityCombustListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCombust(EntityCombustEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCombustByEntity(EntityCombustByEntityEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCombustByBlock(EntityCombustByBlockEvent e) {
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }

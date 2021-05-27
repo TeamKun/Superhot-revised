@@ -26,7 +26,7 @@ public class NotMainPlayerActListener implements Listener {
             return;
         }
 
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
@@ -42,7 +42,7 @@ public class NotMainPlayerActListener implements Listener {
             return;
         }
 
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
@@ -53,7 +53,7 @@ public class NotMainPlayerActListener implements Listener {
             return;
         }
 
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
@@ -68,7 +68,7 @@ public class NotMainPlayerActListener implements Listener {
             return;
         }
 
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
@@ -83,7 +83,7 @@ public class NotMainPlayerActListener implements Listener {
             return;
         }
 
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
@@ -98,7 +98,7 @@ public class NotMainPlayerActListener implements Listener {
             return;
         }
 
-        if (!manager.isMovingState()) {
+        if (!manager.isStateMoving()) {
             e.setCancelled(true);
         }
     }
