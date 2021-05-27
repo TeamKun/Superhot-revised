@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
@@ -78,7 +79,11 @@ public class GameManager {
         Bukkit.getOnlinePlayers().forEach(x -> x.getInventory().addItem(gun, ammo));
         target.getInventory().addItem(swapTool);
 
-        Team enemyTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(Const.enemyTeamName);
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team enemyTeam = scoreboard.getTeam(Const.enemyTeamName);
+        if (enemyTeam == null) {
+            enemyTeam = scoreboard.registerNewTeam(Const.enemyTeamName);
+        }
         enemyTeam.color(NamedTextColor.RED);
         Bukkit.getOnlinePlayers().stream()
                 .filter(x -> !x.getUniqueId().equals(mainPlayerUUID))
@@ -126,7 +131,6 @@ public class GameManager {
         Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
 
-        Bukkit.getOnlinePlayers().forEach(this::removeFromTeam);
         Objects.requireNonNull(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(Const.enemyTeamName)).unregister();
     }
 
@@ -145,6 +149,9 @@ public class GameManager {
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(true);
+            if (living.hasMetadata(Const.cameraEntityMeta)) {
+                living.remove();
+            }
         }
 
         if (entity instanceof Player) {
@@ -153,6 +160,8 @@ public class GameManager {
             p.setFlying(Utils.isCreativeOrSpectator(p) && p.isFlying());
             p.setWalkSpeed(0.2F);
             p.setFlySpeed(0.1F);
+            p.removeMetadata(Const.spectatingMeta, Superhot.getInstance());
+            removeFromTeam(p);
         }
 
         if (entity instanceof Item) {

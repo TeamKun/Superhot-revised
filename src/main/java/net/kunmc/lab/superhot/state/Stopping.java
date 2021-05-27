@@ -1,7 +1,10 @@
 package net.kunmc.lab.superhot.state;
 
 import net.kunmc.lab.superhot.Const;
+import net.kunmc.lab.superhot.Superhot;
+import net.kunmc.lab.superhot.helper.CameraHelper;
 import org.bukkit.entity.*;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class Stopping implements IState {
@@ -15,6 +18,12 @@ public class Stopping implements IState {
             entity.setVelocity(new Vector());
         }
 
+        if (entity.hasMetadata(Const.bulletMeta) ||
+                entity.hasMetadata(Const.spectatingMeta) ||
+                entity.hasMetadata(Const.cameraEntityMeta)) {
+            return;
+        }
+
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(false);
@@ -25,11 +34,14 @@ public class Stopping implements IState {
                 p.setFlying(true);
                 p.setWalkSpeed(0.0F);
                 p.setFlySpeed(0.0F);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Entity camera = CameraHelper.spawnCameraEntity(p.getLocation());
+                        CameraHelper.makePlayerSpectateEntity(p, camera);
+                    }
+                }.runTask(Superhot.getInstance());
             }
-            return;
-        }
-
-        if (entity.hasMetadata(Const.bulletMeta)) {
             return;
         }
 

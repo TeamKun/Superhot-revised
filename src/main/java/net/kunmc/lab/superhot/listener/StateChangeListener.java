@@ -25,7 +25,7 @@ public class StateChangeListener implements Listener {
     private final GameManager manager = GameManager.getInstance();
 
     @EventHandler
-    public void onStateChange(StateChangeEvent e) {
+    public void fixPlayerLocation(StateChangeEvent e) {
         playerLocationFixTasks.values().forEach(BukkitTask::cancel);
         if (e.getStateClass().equals(Stopping.class)) {
             Bukkit.getOnlinePlayers().forEach(p -> {

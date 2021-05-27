@@ -11,9 +11,21 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class NotMainPlayerActListener implements Listener {
     private final GameManager manager = GameManager.getInstance();
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if (e.getPlayer().getUniqueId().equals(manager.getMainPlayerUUID())) {
+            return;
+        }
+
+        if (!manager.isMovingState()) {
+            e.setCancelled(true);
+        }
+    }
 
     @EventHandler
     public void onLaunchProjectile(EntityShootBowEvent e) {

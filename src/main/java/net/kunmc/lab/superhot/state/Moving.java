@@ -1,6 +1,7 @@
 package net.kunmc.lab.superhot.state;
 
 import net.kunmc.lab.superhot.Const;
+import net.kunmc.lab.superhot.helper.CameraHelper;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
@@ -14,6 +15,15 @@ public class Moving implements IState {
             entity.setVelocity(velocity);
         }
 
+        if (entity.hasMetadata(Const.bulletMeta)) {
+            return;
+        }
+
+        if (entity.hasMetadata(Const.cameraEntityMeta)) {
+            entity.remove();
+            return;
+        }
+
         if (entity instanceof LivingEntity) {
             LivingEntity living = ((LivingEntity) entity);
             living.setAI(true);
@@ -25,11 +35,8 @@ public class Moving implements IState {
                 p.setWalkSpeed(0.2F);
                 p.setFlySpeed(0.1F);
                 p.setGravity(true);
+                CameraHelper.makePlayerNotSpectateEntity(p);
             }
-            return;
-        }
-
-        if (entity.hasMetadata(Const.bulletMeta)) {
             return;
         }
 

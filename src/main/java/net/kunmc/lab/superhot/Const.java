@@ -12,4 +12,6 @@ public class Const {
     public static final Component swapToolName = Component.text("SuperhotSwapTool");
     public static final Material swapToolMaterial = Material.NETHER_STAR;
     public static final String enemyTeamName = "SuperhotEnemy";
+    public static final String cameraEntityMeta = "SuperhotCameraEntity";
+    public static final String spectatingMeta = "SpectatingPlayer";
 }
