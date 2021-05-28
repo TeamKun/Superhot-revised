@@ -234,13 +234,11 @@ public class GameManager {
     }
 
     public void removeFromTeam(Player target) {
-        if (Config.isGlowModeEnabled) {
-            Team enemyTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(Const.enemyTeamName);
-            if (enemyTeam == null) {
-                return;
-            }
-            enemyTeam.removeEntry(target.getName());
-            target.setGlowing(false);
+        Team enemyTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(Const.enemyTeamName);
+        if (enemyTeam == null) {
+            return;
         }
+        enemyTeam.removeEntry(target.getName());
+        target.setGlowing(false);
     }
 }
