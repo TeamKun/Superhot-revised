@@ -80,8 +80,12 @@ public class PlayerAttemptSwapListener implements Listener {
                     tmpItemMap.put(i, mainPlayerInv.getItem(i));
                     mainPlayerInv.setItem(i, swapToolMap.get(i));
                 }
-                mainPlayerInv.addItem(tmpItemMap.values().toArray(new ItemStack[0]));
-
+                for (ItemStack itemStack : tmpItemMap.values()) {
+                    if (itemStack != null) {
+                        mainPlayerInv.addItem(itemStack);
+                    }
+                }
+                
                 p.updateInventory();
                 target.updateInventory();
                 break;
