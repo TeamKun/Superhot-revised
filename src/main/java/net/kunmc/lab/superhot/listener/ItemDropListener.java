@@ -1,7 +1,7 @@
 package net.kunmc.lab.superhot.listener;
 
 import net.kunmc.lab.superhot.GameManager;
-import net.kunmc.lab.superhot.Superhot;
+import net.kunmc.lab.superhot.SuperhotTest;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -49,7 +49,7 @@ public class ItemDropListener implements Listener {
                     }
                 });
             }
-        }.runTaskTimer(Superhot.getInstance(), 0, 4);
+        }.runTaskTimer(SuperhotTest.getInstance(), 0, 4);
 
         manager.advanceTime(2);
     }
