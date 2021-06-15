@@ -2,7 +2,7 @@ package net.kunmc.lab.superhot.listener;
 
 import net.kunmc.lab.superhot.Const;
 import net.kunmc.lab.superhot.GameManager;
-import net.kunmc.lab.superhot.SuperhotTest;
+import net.kunmc.lab.superhot.Superhot;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
@@ -51,7 +51,7 @@ public class SuperhotGunUsedListener implements Listener {
         ammo.setAmount(ammo.getAmount() - 1);
 
         Snowball bullet = p.launchProjectile(Snowball.class);
-        bullet.setMetadata(Const.bulletMeta, new FixedMetadataValue(SuperhotTest.getInstance(), null));
+        bullet.setMetadata(Const.bulletMeta, new FixedMetadataValue(Superhot.getInstance(), null));
         bullet.setGravity(false);
 
         //50m飛んだら弾を削除する
@@ -63,6 +63,6 @@ public class SuperhotGunUsedListener implements Listener {
                     bullet.remove();
                 }
             }
-        }.runTaskTimer(SuperhotTest.getInstance(), 0, 20);
+        }.runTaskTimer(Superhot.getInstance(), 0, 20);
     }
 }

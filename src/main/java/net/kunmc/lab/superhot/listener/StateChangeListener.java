@@ -1,7 +1,7 @@
 package net.kunmc.lab.superhot.listener;
 
 import net.kunmc.lab.superhot.GameManager;
-import net.kunmc.lab.superhot.SuperhotTest;
+import net.kunmc.lab.superhot.Superhot;
 import net.kunmc.lab.superhot.event.StateChangeEvent;
 import net.kunmc.lab.superhot.state.Stopping;
 import net.kunmc.lab.superhot.task.PlayerLocationFixer;
@@ -33,7 +33,7 @@ public class StateChangeListener implements Listener {
                 if (uuid.equals(manager.getMainPlayerUUID())) return;
                 if (Utils.isCreativeOrSpectator(p)) return;
 
-                BukkitTask task = new PlayerLocationFixer(uuid, p.getLocation()).runTaskTimer(SuperhotTest.getInstance(), 0, 0);
+                BukkitTask task = new PlayerLocationFixer(uuid, p.getLocation()).runTaskTimer(Superhot.getInstance(), 0, 0);
                 playerLocationFixTasks.put(uuid, task);
             });
         }
@@ -65,7 +65,7 @@ public class StateChangeListener implements Listener {
             respawnLoc = p.getCompassTarget();
         }
 
-        BukkitTask task = new PlayerLocationFixer(uuid, respawnLoc).runTaskTimer(SuperhotTest.getInstance(), 0, 0);
+        BukkitTask task = new PlayerLocationFixer(uuid, respawnLoc).runTaskTimer(Superhot.getInstance(), 0, 0);
         playerLocationFixTasks.put(uuid, task);
 
         if (!manager.isStateMoving()) {
@@ -89,7 +89,7 @@ public class StateChangeListener implements Listener {
             manager.restoreEntityState(p);
             manager.removeFromTeam(p);
         } else if (!uuid.equals(manager.getMainPlayerUUID())) {
-            BukkitTask task = new PlayerLocationFixer(uuid, e.getPlayer().getLocation()).runTaskTimer(SuperhotTest.getInstance(), 0, 0);
+            BukkitTask task = new PlayerLocationFixer(uuid, e.getPlayer().getLocation()).runTaskTimer(Superhot.getInstance(), 0, 0);
             playerLocationFixTasks.put(uuid, task);
 
             manager.addToTeam(e.getPlayer());

@@ -1,7 +1,7 @@
 package net.kunmc.lab.superhot.listener;
 
 import net.kunmc.lab.superhot.GameManager;
-import net.kunmc.lab.superhot.SuperhotTest;
+import net.kunmc.lab.superhot.Superhot;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
@@ -17,6 +17,6 @@ public class EntitySpawnListener implements Listener {
             public void run() {
                 manager.updateEntity(e.getEntity());
             }
-        }.runTaskLater(SuperhotTest.getInstance(), 2);
+        }.runTaskLater(Superhot.getInstance(), 2);
     }
 }

@@ -50,7 +50,7 @@ public class GameManager {
         isSuperhotEnabled = true;
         isMainPlayerMoving = true;
 
-        JavaPlugin plugin = SuperhotTest.getInstance();
+        JavaPlugin plugin = Superhot.getInstance();
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new BlockChangeListener(), plugin);
         pluginManager.registerEvents(new EntityCombustListener(), plugin);
@@ -69,7 +69,7 @@ public class GameManager {
         pluginManager.registerEvents(new SuperhotGunUsedListener(), plugin);
 
         new MainPlayerMoveObserver()
-                .runTaskTimerAsynchronously(SuperhotTest.getInstance(), 0, 0);
+                .runTaskTimerAsynchronously(Superhot.getInstance(), 0, 0);
 
         ItemStack gun = ItemHelper.createItem(Const.gunMaterial, Const.gunName, 1);
         ItemStack ammo = ItemHelper.createItem(Const.ammoMaterial, Const.ammoName, Config.ammoAmount);
@@ -95,7 +95,7 @@ public class GameManager {
         isSuperhotEnabled = false;
         isMainPlayerMoving = false;
 
-        JavaPlugin plugin = SuperhotTest.getInstance();
+        JavaPlugin plugin = Superhot.getInstance();
         BlockBreakEvent.getHandlerList().unregister(plugin);
         BlockBurnEvent.getHandlerList().unregister(plugin);
         BlockDamageEvent.getHandlerList().unregister(plugin);
@@ -127,7 +127,7 @@ public class GameManager {
         ProjectileLaunchEvent.getHandlerList().unregister(plugin);
         StateChangeEvent.getHandlerList().unregister(plugin);
 
-        Bukkit.getScheduler().cancelTasks(SuperhotTest.getInstance());
+        Bukkit.getScheduler().cancelTasks(Superhot.getInstance());
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e").forEach(this::restoreEntityState);
 
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(Const.enemyTeamName);
@@ -138,7 +138,7 @@ public class GameManager {
 
     public void changeState(IState state) {
         this.state = state;
-        Bukkit.getScheduler().runTask(SuperhotTest.getInstance(), () -> Bukkit.getPluginManager().callEvent(new StateChangeEvent(state.getClass())));
+        Bukkit.getScheduler().runTask(Superhot.getInstance(), () -> Bukkit.getPluginManager().callEvent(new StateChangeEvent(state.getClass())));
     }
 
     public void restoreEntityState(Entity entity) {
@@ -221,7 +221,7 @@ public class GameManager {
                 changeState(isMainPlayerMoving ? new Moving() : new Stopping());
                 updateAllEntities();
             }
-        }.runTaskLater(SuperhotTest.getInstance(), tick);
+        }.runTaskLater(Superhot.getInstance(), tick);
     }
 
     public void addToTeam(Player target) {

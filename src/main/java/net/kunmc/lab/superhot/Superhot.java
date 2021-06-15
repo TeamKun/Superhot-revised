@@ -4,10 +4,10 @@ import net.kunmc.lab.superhot.command.CommandHandler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class SuperhotTest extends JavaPlugin {
-    private static SuperhotTest INSTANCE;
+public final class Superhot extends JavaPlugin {
+    private static Superhot INSTANCE;
 
-    public static SuperhotTest getInstance() {
+    public static Superhot getInstance() {
         return INSTANCE;
     }
 
